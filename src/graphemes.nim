@@ -1,7 +1,7 @@
 from unicode import nil
 from algorithm import binarySearch
 
-from grapheme_break import GraphemeBreakPoints, GraphemeBreakTypes
+from graphemes/private/grapheme_break import GraphemeBreakPoints, GraphemeBreakTypes
 
 # Auto generated with github@nitely/regexy
 # See ../gen/gen_re.nim for the original regex

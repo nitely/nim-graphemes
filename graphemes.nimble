@@ -5,7 +5,8 @@ author        = "Esteban Castro Borsani (@nitely)"
 description   = "Grapheme aware string handling (Unicode tr29)"
 license       = "MIT"
 srcDir = "src"
-skipDirs = @["tests"]
+
+skipDirs = @["tests", "gen"]
 
 # Dependencies
 
