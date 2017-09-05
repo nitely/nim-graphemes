@@ -13,4 +13,3 @@ requires "nim >= 0.17.0"
 
 task tests, "Test":
   exec "nim c -r tests/tests"
-  rmFile "tests/tests"
