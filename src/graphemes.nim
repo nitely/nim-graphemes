@@ -1,7 +1,7 @@
 from unicode import nil
 from algorithm import binarySearch
 
-from graphemes/private/grapheme_break import GraphemeBreakPoints, GraphemeBreakTypes
+from graphemes/private/grapheme_break import graphemeType
 
 # Auto generated with github@nitely/regexy
 # See ../gen/gen_re.nim for the original regex
@@ -34,19 +34,16 @@ var DFA = [
   [1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 ]
 
-const GBAnyType = 18
-
 iterator graphemes*(text: string): string =
-  var curr_state = DFA[0]
+  var currState = DFA[0]
   var captured = ""
 
   for cp in unicode.runes(text):
-    var cp_index = binarySearch(GraphemeBreakPoints, int(cp))
-    var cp_type = if cp_index >= 0: GraphemeBreakTypes[cp_index] else: GBAnyType
+    var cpType = graphemeType(int(cp))
 
-    if curr_state[cp_type] >= 0:
+    if currState[cpType] >= 0:
         captured.add(unicode.toUTF8(cp))
-        curr_state = DFA[curr_state[cp_type]]
+        currState = DFA[currState[cpType]]
         continue
     # else break grapheme
 
@@ -54,13 +51,13 @@ iterator graphemes*(text: string): string =
         yield captured
         captured = ""
 
-    if DFA[0][cp_type] >= 0:
+    if DFA[0][cpType] >= 0:
         captured.add(unicode.toUTF8(cp))
-        curr_state = DFA[DFA[0][cp_type]]
+        currState = DFA[DFA[0][cpType]]
         continue
 
     yield unicode.toUTF8(cp)
-    curr_state = DFA[0]
+    currState = DFA[0]
 
   if len(captured) > 0:
       yield captured
