@@ -1,7 +1,8 @@
 import strutils
 
-var version* = "Unicode 10.0.0"
-var specURL* = "http://www.unicode.org/reports/tr29/"
+const unicodeVersion* = "10.0.0"
+const specVersion* = "29"
+const specURL* = "http://www.unicode.org/reports/tr29/"
 
 # All identifiers must be replaced by single
 # characters in order to build the actual regex expression
