@@ -22,8 +22,9 @@ const pattern =
   "(?:SpacingMark | Extend | ZWJ)* " &
   ")"
 
-# IDs must be in non-overlapping substring order (i.e longest to sortest)
-const identifiers = [
+# IDs must be in non-overlapping substring order (i.e longest to shortest)
+const identifiers* = [
+  "__EOF__",  # Reserved for the DFA
   "Regional_Indicator",
   "E_Base_GAZ",
   "E_Base",
@@ -43,7 +44,7 @@ const identifiers = [
   "T",
   "Any"]
 
-var letters = ""
+var letters* = ""
 for c in 'a'..'z':
   letters.add(c)
 

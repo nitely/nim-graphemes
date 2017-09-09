@@ -1,5 +1,7 @@
-import unittest, strutils, unicode
+import unittest, strutils, unicode, tables
 import graphemes
+from graphemes/private/grapheme_break import graphemeType
+from ../gen/gen_grapheme_break import nil
 
 test "Graphemes test file":
   var i = 0
@@ -28,3 +30,13 @@ test "Graphemes test file":
     inc i
 
   echo "$# grapehemes tested" % [$i]
+
+test "Generated tables":
+  var data = gen_grapheme_break.parse("./gen/GraphemeBreakProperty.txt")
+  var i = 0
+
+  for cp, tcp in data:
+    doAssert(graphemeType(cp) == tcp)
+    inc i
+
+  echo "$# code-points tested" % [$i]

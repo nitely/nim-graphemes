@@ -8704,7 +8704,6 @@ const graphemeIndexes = [
   2,
   2,
   2,
-  2,
   2
 ]
 
@@ -8836,9 +8835,9 @@ const graphemeTypes = [
   [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
 ]
 
-const blockShift = 128
+const blockSize = 128
 
 proc graphemeType*(chr: int): int =
   assert chr < 0x110000
-  var blockOffset = graphemeIndexes[chr div blockShift]
-  return graphemeTypes[blockOffset][chr mod blockShift]
+  var blockOffset = graphemeIndexes[chr div blockSize]
+  return graphemeTypes[blockOffset][chr mod blockSize]
