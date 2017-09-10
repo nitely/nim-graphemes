@@ -3,7 +3,7 @@ import graphemes
 from graphemes/private/grapheme_break import graphemeType
 from ../gen/gen_grapheme_break import nil
 
-test "Graphemes test file":
+test "Test graphemes break":
   var i = 0
 
   for line in lines("./tests/GraphemeBreakTest.txt"):
@@ -31,7 +31,7 @@ test "Graphemes test file":
 
   echo "$# grapehemes tested" % [$i]
 
-test "Generated tables":
+test "Test generated tables":
   var data = gen_grapheme_break.parse("./gen/GraphemeBreakProperty.txt")
   var i = 0
 

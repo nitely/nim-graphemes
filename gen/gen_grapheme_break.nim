@@ -47,7 +47,7 @@ type Stages = ref object
 # data is a seq of code_point_int (index) -> break_type_int
 # block size is any power of 2
 proc makeTable(data: seq[int], blockSize: int): Stages =
-  let blocksCount = maxCP div blockSize
+  let blocksCount = (maxCP + 1) div blockSize
   var stage1 = newSeq[int](blocksCount)
   var stage2: seq[seq[int]] = @[]
   # max_cp = max(data)[0]

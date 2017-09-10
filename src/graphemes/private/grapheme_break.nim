@@ -8704,6 +8704,7 @@ const graphemeIndexes = [
   2,
   2,
   2,
+  2,
   2
 ]
 
