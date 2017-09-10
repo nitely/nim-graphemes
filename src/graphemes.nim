@@ -38,7 +38,7 @@ iterator graphemes*(text: string): string =
   var captured = ""
 
   for cp in unicode.runes(text):
-    var cpType = graphemeType(int(cp))
+    let cpType = graphemeType(int(cp))
 
     if currState[cpType] >= 0:
       captured.add(unicode.toUTF8(cp))

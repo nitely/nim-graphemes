@@ -45,7 +45,7 @@ const identifiers* = [
   "Any"]
 
 var letters* = ""
-for c in 'a'..'z':
+for c in 'a' .. 'z':
   letters.add(c)
 
 proc buildRePattern*(): string =

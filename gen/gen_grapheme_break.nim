@@ -4,9 +4,17 @@ import math
 
 from gen_re import identifiers
 
+const
+  typeDefault = identifiers.find("Any")
+  maxCP = 0x10FFFF
 
-proc parse*(filePath: string): TableRef[int, int] =
-  var data = newTable[int, int]()
+assert typeDefault >= 0
+
+proc parse*(filePath: string): seq[int] =
+  # This used to be a nim Table but it was painfully slow
+  var data = newSeq[int](maxCP + 1)
+  for i in 0 .. maxCP:
+    data[i] = typeDefault
 
   for line in lines(filePath):
     if len(line.strip()) == 0:
@@ -14,54 +22,43 @@ proc parse*(filePath: string): TableRef[int, int] =
     if line.startswith('#'):
       continue
 
-    var
-      ch = line.split(";", 1)[0].strip()
-      tp = line.split(";", 1)[1].split("#", 1)[0].strip()
+    let
+      lineParts = line.split(";", 1)
+      ch = lineParts[0].strip()
+      tp = lineParts[1].split("#", 1)[0].strip()
       cpType = identifiers.find(tp)
 
     assert cpType >= 0
 
-    if ch.contains(".."):
-      var chRange = ch.split("..", 1)
+    if ".." in ch:
+      let chRange = ch.split("..", 1)
 
-      for hx in parseHexInt("0x$#" % chRange[0])..parseHexInt("0x$#" % chRange[1]):
+      for hx in parseHexInt("0x$#" % chRange[0]) .. parseHexInt("0x$#" % chRange[1]):
         data[hx] = cpType
     else:
       data[parseHexInt("0x$#" % ch)] = cpType
 
   return data
 
-
-const
-  typeDefault = identifiers.find("Any")
-  maxCP = 0x10FFFF
-
-assert typeDefault >= 0
-
-
 type Stages = ref object
   stage1: seq[int]
   stage2: seq[seq[int]]
 
-
-# data is a hashmap of code_point_int, break_type_int
+# data is a seq of code_point_int (index) -> break_type_int
 # block size is any power of 2
-proc makeTable(data: TableRef[int, int], blockSize: int): Stages =
+proc makeTable(data: seq[int], blockSize: int): Stages =
   let blocksCount = maxCP div blockSize
   var stage1 = newSeq[int](blocksCount)
   var stage2: seq[seq[int]] = @[]
   # max_cp = max(data)[0]
 
-  for i in 0..blocksCount:
+  for i in 0 .. <blocksCount:
     var
       blockOffset = i * blockSize
       typesBlock = newSeq[int](blockSize)
 
-    for j in 0..blockSize - 1:
-      try:
-        typesBlock[j] = data[blockOffset + j]
-      except KeyError:
-        typesBlock[j] = typeDefault
+    for j in 0 .. <blockSize:
+      typesBlock[j] = data[blockOffset + j]
 
     let blockIndex = stage2.find(typesBlock)
 
@@ -74,7 +71,7 @@ proc makeTable(data: TableRef[int, int], blockSize: int): Stages =
   return Stages(stage1: stage1, stage2: stage2)
 
 
-proc findBestTable(data: TableRef[int, int], block_size: var int): Stages =
+proc findBestTable(data: seq[int], block_size: var int): Stages =
   var best = -1
   var i = 1
   var stages = Stages(stage1: @[], stage2: @[])
@@ -114,15 +111,15 @@ proc graphemeType*(chr: int): int =
   return graphemeTypes[blockOffset][chr mod blockSize]
 """
 
-## Run: nim c -d:release --run gen_grapheme_break.nim > ../src/graphemes/private/grapheme_break.nim
-when isMainModule:
-  var data = parse("./gen/GraphemeBreakProperty.txt")
-  var blockSize = 0
-  var stages = findBestTable(data, blockSize)
 
-  var stage2: seq[string] = @[]
-  for t in stages.stage2:
-    stage2.add("[$#]" % [join(t, ", ")])
+when isMainModule:
+  let data = parse("./gen/GraphemeBreakProperty.txt")
+  var blockSize = 0
+  let stages = findBestTable(data, blockSize)
+
+  var stage2 = newSeq[string](len(stages.stage2))
+  for i, t in stages.stage2:
+    stage2[i] = "[$#]" % [join(t, ", ")]
 
   var f = open("./src/graphemes/private/grapheme_break.nim", fmWrite)
   try:
