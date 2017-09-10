@@ -1,3 +1,9 @@
+0.1.3
+==================
+
+* Add generators
+* Perf improvements
+
 0.1.2
 ==================
 
