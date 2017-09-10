@@ -1,11 +1,10 @@
 from unicode import nil
-from algorithm import binarySearch
 
 from graphemes/private/grapheme_break import graphemeType
 
 # Auto generated with github@nitely/regexy
 # See ../gen/gen_re.nim for the original regex
-var DFA = [
+const DFA = [
   [1, 21, 10, 13, 12, 11, 8, 25, 7, 22, 1, 14, 24, 23, 15, 20, 18, 17, 9],
   [1, -1, 5, -1, -1, 6, 4, -1, 3, -1, 2, -1, -1, -1, -1, -1, -1, -1, -1],
   [1, -1, -1, -1, -1, -1, 2, -1, 2, -1, 2, -1, -1, -1, -1, -1, -1, -1, -1],
@@ -39,28 +38,28 @@ iterator graphemes*(text: string): string =
   var captured = ""
 
   for cp in unicode.runes(text):
-    var cpType = graphemeType(int(cp))
+    let cpType = graphemeType(int(cp))
 
     if currState[cpType] >= 0:
-        captured.add(unicode.toUTF8(cp))
-        currState = DFA[currState[cpType]]
-        continue
+      captured.add(unicode.toUTF8(cp))
+      currState = DFA[currState[cpType]]
+      continue
     # else break grapheme
 
     if len(captured) > 0:
-        yield captured
-        captured = ""
+      yield captured
+      captured = ""
 
     if DFA[0][cpType] >= 0:
-        captured.add(unicode.toUTF8(cp))
-        currState = DFA[DFA[0][cpType]]
-        continue
+      captured.add(unicode.toUTF8(cp))
+      currState = DFA[DFA[0][cpType]]
+      continue
 
     yield unicode.toUTF8(cp)
     currState = DFA[0]
 
   if len(captured) > 0:
-      yield captured
+    yield captured
 
 proc graphemes*(text: string): seq[string] =
   result = @[]

@@ -14,3 +14,9 @@ requires "nim >= 0.17.0"
 
 task tests, "Test":
   exec "nim c -r tests/tests"
+
+task gen_re, "Gen regex":
+  exec "nim c -r -d:release gen/gen_re"
+
+task gen_tables, "Gen break tables":
+  exec "nim c -r -d:release gen/gen_grapheme_break"
