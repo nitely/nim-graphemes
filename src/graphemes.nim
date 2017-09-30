@@ -50,13 +50,9 @@ iterator graphemes*(text: string): string =
       yield captured
       captured = ""
 
-    if DFA[0][cpType] >= 0:
-      captured.add(unicode.toUTF8(cp))
-      currState = DFA[DFA[0][cpType]]
-      continue
-
-    yield unicode.toUTF8(cp)
-    currState = DFA[0]
+    assert DFA[0][cpType] >= 0
+    captured.add(unicode.toUTF8(cp))
+    currState = DFA[DFA[0][cpType]]
 
   if len(captured) > 0:
     yield captured
