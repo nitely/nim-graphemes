@@ -1,4 +1,4 @@
-from unicode import nil
+import unicode
 
 from graphemes/private/grapheme_break import graphemeType
 
@@ -33,31 +33,35 @@ const DFA = [
   [1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 ]
 
-iterator graphemes*(text: string): string =
+iterator graphemes*(text: string): string {.inline.} =
   var currState = DFA[0]
-  var captured = ""
+  var cp: Rune
+  var a = 0
+  var b = 0
+  var n = 0
 
-  for cp in unicode.runes(text):
+  while b < text.len:
+    fastRuneAt(text, n, cp, true)
     let cpType = graphemeType(int(cp))
 
     if currState[cpType] >= 0:
-      captured.add(unicode.toUTF8(cp))
+      b = n
       currState = DFA[currState[cpType]]
       continue
     # else break grapheme
 
-    if len(captured) > 0:
-      yield captured
-      captured = ""
+    if b > a:
+      yield text[a ..< b]
+      a = b
 
+    b = n
     assert DFA[0][cpType] >= 0
-    captured.add(unicode.toUTF8(cp))
     currState = DFA[DFA[0][cpType]]
 
-  if len(captured) > 0:
-    yield captured
+  if b > a:
+    yield text[a ..< b]
 
 proc graphemes*(text: string): seq[string] =
-  result = @[]
+  result = newSeqOfCap[string](text.len)
   for c in graphemes(text):
     result.add(c)

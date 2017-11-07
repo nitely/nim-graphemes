@@ -107,7 +107,7 @@ const blockSize = $#
 
 proc graphemeType*(chr: int): int =
   assert chr < 0x110000
-  var blockOffset = graphemeIndexes[chr div blockSize]
+  let blockOffset = graphemeIndexes[chr div blockSize]
   return graphemeTypes[blockOffset][chr mod blockSize]
 """
 
