@@ -43,10 +43,11 @@ iterator graphemes*(text: string): string {.inline.} =
   while b < text.len:
     fastRuneAt(text, n, cp, true)
     let cpType = graphemeType(int(cp))
+    let nStateIdx = currState[cpType]
 
-    if currState[cpType] >= 0:
+    if nStateIdx != -1:
       b = n
-      currState = DFA[currState[cpType]]
+      currState = DFA[nStateIdx]
       continue
     # else break grapheme
 
