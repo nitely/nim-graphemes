@@ -1,3 +1,6 @@
+## This module provides support to
+## handle unicode grapheme clusters
+
 import unicode
 
 from graphemes/private/grapheme_break import graphemeType
@@ -34,16 +37,20 @@ const DFA = [
 ]
 
 iterator graphemes*(text: string): string {.inline.} =
-  var currState = DFA[0]
-  var cp: Rune
-  var a = 0
-  var b = 0
-  var n = 0
+  ## Iterates over any grapheme (i.e user perceived character)
+  ## of the string text returning graphemes
+  var
+    currState = DFA[0]
+    cp: Rune
+    a = 0
+    b = 0
+    n = 0
 
-  while b < text.len:
+  while n < text.len:
     fastRuneAt(text, n, cp, true)
-    let cpType = graphemeType(int(cp))
-    let nStateIdx = currState[cpType]
+    let
+      cpType = graphemeType(int(cp))
+      nStateIdx = currState[cpType]
 
     if nStateIdx != -1:
       b = n
@@ -63,6 +70,7 @@ iterator graphemes*(text: string): string {.inline.} =
     yield text[a ..< b]
 
 proc graphemes*(text: string): seq[string] =
+  ## Return a sequence containing the graphemes in text
   result = newSeqOfCap[string](text.len)
   for c in graphemes(text):
     result.add(c)
