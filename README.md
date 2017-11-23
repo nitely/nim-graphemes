@@ -1,6 +1,7 @@
 # nim-graphemes
 
-[![licence](https://img.shields.io/pypi/l/regexy.svg?style=flat-square)](https://raw.githubusercontent.com/nitely/nim-graphemes/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/nitely/nim-graphemes.svg?style=flat-square)](https://travis-ci.org/nitely/nim-graphemes)
+[![licence](https://img.shields.io/pypi/l/nim-graphemes.svg?style=flat-square)](https://raw.githubusercontent.com/nitely/nim-graphemes/master/LICENSE)
 
 A Nim library for grapheme aware string handling (Unicode tr29). The splitting is made through a fast DFA.
 
