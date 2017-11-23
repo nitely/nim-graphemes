@@ -4,3 +4,7 @@ before_install:
   - docker pull nimlang/nim:0.17.0
 script:
   - nimble tests
+notifications:
+  email:
+    on_failure: never
+    on_success: never
