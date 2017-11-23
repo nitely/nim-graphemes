@@ -1,7 +1,7 @@
 # nim-graphemes
 
 [![Build Status](https://img.shields.io/travis/nitely/nim-graphemes.svg?style=flat-square)](https://travis-ci.org/nitely/nim-graphemes)
-[![licence](https://img.shields.io/pypi/l/nim-graphemes.svg?style=flat-square)](https://raw.githubusercontent.com/nitely/nim-graphemes/master/LICENSE)
+[![licence](https://img.shields.io/github/license/nitely/nim-graphemes.svg?style=flat-square)](https://raw.githubusercontent.com/nitely/nim-graphemes/master/LICENSE)
 
 A Nim library for grapheme aware string handling (Unicode tr29). The splitting is made through a fast DFA.
 
