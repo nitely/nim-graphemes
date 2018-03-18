@@ -12,7 +12,7 @@ skipDirs = @["tests", "gen"]
 
 requires "nim >= 0.17.0"
 
-task tests, "Test":
+task test, "Test":
   exec "nim c -r tests/tests"
 
 task gen_re, "Gen regex":

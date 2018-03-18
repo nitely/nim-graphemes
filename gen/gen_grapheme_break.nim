@@ -52,12 +52,12 @@ proc makeTable(data: seq[int], blockSize: int): Stages =
   var stage2: seq[seq[int]] = @[]
   # max_cp = max(data)[0]
 
-  for i in 0 .. <blocksCount:
+  for i in 0 ..< blocksCount:
     var
       blockOffset = i * blockSize
       typesBlock = newSeq[int](blockSize)
 
-    for j in 0 .. <blockSize:
+    for j in 0 ..< blockSize:
       typesBlock[j] = data[blockOffset + j]
 
     let blockIndex = stage2.find(typesBlock)
@@ -119,12 +119,12 @@ when isMainModule:
 
   var stage2 = newSeq[string](len(stages.stage2))
   for i, t in stages.stage2:
-    stage2[i] = "[$#]" % [join(t, ", ")]
+    stage2[i] = "[$#]" % [join(t, "'i8, ")]
 
   var f = open("./src/graphemes/private/grapheme_break.nim", fmWrite)
   try:
     f.write(graphemeBreakTemplate % [
-      join(stages.stage1, ",\n  "),
+      join(stages.stage1, "'i8,\n  "),
       join(stage2, ",\n  "),
       $blockSize])
   finally:
