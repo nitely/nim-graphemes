@@ -1,9 +1,9 @@
 # Package
 
-version       = "0.1.4"
-author        = "Esteban Castro Borsani (@nitely)"
-description   = "Grapheme aware string handling (Unicode tr29)"
-license       = "MIT"
+version = "0.1.5"
+author = "Esteban Castro Borsani (@nitely)"
+description = "Grapheme aware string handling (Unicode tr29)"
+license = "MIT"
 srcDir = "src"
 
 skipDirs = @["tests", "gen"]

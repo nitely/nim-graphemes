@@ -30,7 +30,7 @@ echo len(graphemes("ю́"))
 ## Tests
 
 ```
-$ nimble tests
+$ nimble test
 ```
 
 
