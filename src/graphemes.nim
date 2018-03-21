@@ -36,33 +36,31 @@ const DFA = [
   [1'i8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 ]
 
-iterator graphemes*(text: string): string {.inline.} =
+iterator graphemes*(s: string): string {.inline.} =
   ## Iterates over any grapheme (i.e user perceived character)
   ## of the string text returning graphemes
   var
-    currState = DFA[0]
-    cp: Rune
-    a = 0
-    b = 0
-    n = 0
-  while n < text.len or a < b:
-    while n < text.len:
-      fastRuneAt(text, n, cp, true)
+    state = DFA[0]
+    r: Rune
+    a, b, n = 0
+  while n < s.len or a < b:
+    while n < s.len:
+      fastRuneAt(s, n, r, true)
       let
-        cpType = graphemeType(int(cp))
-        idx = currState[cpType]
+        t = graphemeType(int(r))
+        idx = state[t]
       if idx == -1:
-        currState = DFA[DFA[0][cpType]]
+        state = DFA[DFA[0][t]]
         break
       b = n
-      currState = DFA[idx]
+      state = DFA[idx]
     assert b > a
-    yield text[a ..< b]
+    yield s[a ..< b]
     a = b
     b = n
 
-proc graphemes*(text: string): seq[string] =
+proc graphemes*(s: string): seq[string] =
   ## Return a sequence containing the graphemes in text
-  result = newSeqOfCap[string](text.len)
-  for c in graphemes(text):
+  result = newSeqOfCap[string](s.len)
+  for c in graphemes(s):
     result.add(c)
