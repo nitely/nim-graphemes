@@ -48,12 +48,12 @@ iterator graphemes*(s: string): string {.inline.} =
       fastRuneAt(s, n, r, true)
       let
         t = graphemeType(int(r))
-        idx = state[t]
-      if idx == -1:
+        nxt = state[t]
+      if nxt == -1:
         state = DFA[DFA[0][t]]
         break
       b = n
-      state = DFA[idx]
+      state = DFA[nxt]
     assert b > a
     yield s[a ..< b]
     a = b
