@@ -64,3 +64,27 @@ proc graphemes*(s: string): seq[string] =
   result = newSeqOfCap[string](s.len)
   for c in graphemes(s):
     result.add(c)
+
+proc graphemeLenAt*(s: string, i: Natural): int =
+  ## Return the number of bytes the
+  ## grapheme starting at ``s[i]`` takes
+  result = 0
+  var
+    state = DFA[0]
+    r: Rune
+    n = i
+    nxt = 0
+  while n < len(s):
+    fastRuneAt(s, n, r, true)
+    nxt = state[graphemeType(int(r))]
+    if nxt == -1: break
+    state = DFA[nxt]
+    result = n - i
+
+proc graphemesCount*(s: string): int =
+  ## Return the number of graphemes in ``s``
+  result = 0
+  var n = 0
+  while n < len(s):
+    inc(n, graphemeLenAt(s, n))
+    inc result

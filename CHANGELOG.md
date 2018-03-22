@@ -1,3 +1,8 @@
+v0.2.0
+==================
+
+* Add `graphemeLenAt` and `graphemesCount`
+
 v0.1.5
 ==================
 

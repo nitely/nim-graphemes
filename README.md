@@ -19,11 +19,12 @@ import graphemes
 for c in graphemes("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"):
   echo c
 
-echo len(graphemes("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"))
-# 10
+assert graphemesCount("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲") == 10
+assert graphemesCount("ю́") == 1
 
-echo len(graphemes("ю́"))
-# 1
+# Get number of bytes the grapheme at index 0 takes
+assert graphemeLenAt("u̲n̲d̲e̲r̲", 0) == 2
+assert graphemeLenAt("ю́", 0) == 4
 ```
 
 
