@@ -20,3 +20,6 @@ task gen_re, "Gen regex":
 
 task gen_tables, "Gen break tables":
   exec "nim c -r gen/gen_grapheme_break"
+
+task docs, "Docs":
+  exec "nim doc2 -o:./docs/index.html ./src/graphemes.nim"
