@@ -47,6 +47,7 @@ test "Test graphemeLenAt":
   check(len("\u0061\u0308\u0062") == 4)
   check(graphemeLenAt("\u0061\u0308\u0062", 0) == 3)
   check(graphemeLenAt("\u0061\u0308\u0062", 3) == 1)
+  check(graphemeLenAt("ю́", 0) == len("ю́"))
 
 test "Test graphemesCount":
   check(graphemesCount("abc") == 3)
@@ -55,4 +56,40 @@ test "Test graphemesCount":
   check(graphemesCount("\u0061\u200D") == 1)
   check(graphemesCount("\u0061\u200D\u200D") == 1)
   check(graphemesCount("\u0061\u0308\u0062") == 2)
-  echo graphemeLenAt("ю́", 0)
+  check(len("ю́".toRunes) == 2)
+  check(graphemesCount("ю́") == 1)
+
+# todo: fix!
+test "Test emojis":
+  # Emoji Version 1.0
+
+  # 3 flags
+  check(graphemesCount("🇺🇸🇨🇦🇩🇰") == 3)
+  # 1 flag
+  check(graphemesCount("🇦🇷") == 1)
+
+  # Emoji Version 2.0
+
+  # 6 families
+  #check(graphemesCount("👪👨‍👧‍👧👩‍👩‍👧‍👦👨‍👨‍👦‍👦👨‍👧👩‍👦‍👦") == 6)
+  # 1 family of 4
+  #check(graphemesCount("👨‍👩‍👧‍👦") == 1)
+  # 6 hands with skin tone
+  check(graphemesCount("👋👋🏻👋🏼👋🏽👋🏾👋🏿") == 6)
+  # 1 hand with skin tone
+  check(graphemesCount("👋🏽") == 1)
+
+  # Emoji Version 4.0
+
+  # Man Health Worker
+  #check(graphemesCount("👨‍⚕️") == 1)
+
+  # Emoji Version 5.0
+
+  # Man Vampire: Light Skin Tone
+  #check(graphemesCount("🧛🏻‍♂️") == 1)
+
+  # Emoji Version 11.0
+
+  # Pirate Flag
+  #check(graphemesCount("🏴‍☠️") == 1)
