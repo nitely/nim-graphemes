@@ -79,6 +79,11 @@ test "Test emojis":
   # 1 hand with skin tone
   check(graphemesCount("👋🏽") == 1)
 
+  # Emoji Version 3.0
+
+  # Keycap Digit Nine
+  check(graphemesCount("9️⃣") == 1)
+
   # Emoji Version 4.0
 
   # Man Health Worker
