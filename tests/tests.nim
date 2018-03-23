@@ -15,12 +15,13 @@ test "Test graphemes break":
         continue
       var grapheme = ""
       for ch2 in ch1.split("×"):
-        if len(ch2.strip()) > 0:
-          grapheme.add(unicode.toUTF8(unicode.Rune(parseHexInt(ch2.strip()))))
+        if len(ch2.strip()) == 0:
+          continue
+        grapheme.add(unicode.toUTF8(unicode.Rune(parseHexInt(ch2.strip()))))
       graphemesFromTest.add(grapheme)
     check(graphemes(join(graphemesFromTest)) == graphemesFromTest)
     inc i
-  echo "$# grapehemes tested" % [$i]
+  echo "$# graphemes tested" % [$i]
 
 test "Test generated tables":
   var
