@@ -1,4 +1,4 @@
-import unittest, strutils, unicode, tables
+import unittest, strutils, unicode, tables, algorithm
 import graphemes
 from graphemes/private/grapheme_break import graphemeType
 from ../gen/gen_grapheme_break import nil
@@ -23,12 +23,32 @@ test "Test graphemes break":
     inc i
   echo "$# graphemes tested" % [$i]
 
+test "Test graphemes break in reverse":
+  var i = 0
+  for line in lines("./tests/GraphemeBreakTest.txt"):
+    var text = line.split("#", 1)[0]
+    if text.strip.len == 0:
+      continue
+    var graphemesFromTest = newSeq[string]()
+    for ch1 in text.split("÷"):
+      if ch1.strip.len == 0:
+        continue
+      var grapheme = ""
+      for ch2 in ch1.split("×"):
+        if ch2.strip.len == 0:
+          continue
+        grapheme.add(unicode.toUTF8(unicode.Rune(parseHexInt(ch2.strip()))))
+      graphemesFromTest.add(grapheme)
+    check graphemesFromTest.join.graphemesReversed == graphemesFromTest.reversed
+    inc i
+  echo "$# graphemes tested" % [$i]
+
 test "Test generated tables":
   var
     data = gen_grapheme_break.parse("./gen/GraphemeBreakProperty.txt")
     i = 0
   for cp, tcp in data:
-    check(graphemeType(cp) == tcp)
+    check(graphemeType(cp.Rune) == tcp)
     inc i
   echo "$# code-points tested" % [$i]
 
@@ -50,6 +70,29 @@ test "Test graphemeLenAt":
   check(graphemeLenAt("\u0061\u0308\u0062", 3) == 1)
   check(graphemeLenAt("ю́", 0) == len("ю́"))
 
+test "Test graphemeLenAt backward index":
+  check(graphemeLenAt("", ^1) == 0)
+  check(graphemeLenAt("abc", ^1) == 1)
+  check(graphemeLenAt("abc", ^2) == 1)
+  check(graphemeLenAt("abc", ^3) == 1)
+  check(graphemeLenAt("abc", ^123) == 0)
+  check(graphemeLenAt("u̲", ^1) == 3)
+  check(graphemeLenAt("u̲n̲", ^1) == 3)
+  check(graphemeLenAt("u̲n̲", ^4) == 3)
+  check(len("\u0061\u200D") == 4)
+  check(graphemeLenAt("\u0061\u200D", ^1) == 4)
+  check(len("\u0061\u200D\u200D") == 7)
+  check(graphemeLenAt("\u0061\u200D\u200D", ^1) == 7)
+  check(len("\u0061\u0308") == 3)
+  check(len("\u0061\u0308\u0062") == 4)
+  check(graphemeLenAt("\u0061\u0308\u0062", ^1) == 1)
+  check(graphemeLenAt("\u0061\u0308\u0062", ^2) == 3)
+  check(graphemeLenAt("ю́", ^1) == len("ю́"))
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    s.setLen(s.len - s.graphemeLenAt(^1))
+    check s == "u̲n̲d̲e̲r̲l̲i̲n̲e̲"
+
 test "Test graphemesCount":
   check(graphemesCount("abc") == 3)
   check(graphemesCount("u̲") == 1)
@@ -59,6 +102,7 @@ test "Test graphemesCount":
   check(graphemesCount("\u0061\u0308\u0062") == 2)
   check(len("ю́".toRunes) == 2)
   check(graphemesCount("ю́") == 1)
+  check(graphemesCount("\r\L") == 1)
 
 # todo: fix!
 test "Test emojis":

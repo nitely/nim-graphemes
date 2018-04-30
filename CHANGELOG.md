@@ -1,3 +1,10 @@
+v0.3.0
+==================
+
+* Drop Nim 0.17 support
+* Add `graphemeLenAt` with `BackwardsIndex`
+  and `graphemesReversed`
+
 v0.2.0
 ==================
 

@@ -1,6 +1,6 @@
 # Package
 
-version = "0.2.0"
+version = "0.3.0"
 author = "Esteban Castro Borsani (@nitely)"
 description = "Grapheme aware string handling (Unicode tr29)"
 license = "MIT"
@@ -10,7 +10,7 @@ skipDirs = @["tests", "gen"]
 
 # Dependencies
 
-requires "nim >= 0.17.0"
+requires "nim >= 0.18.0"
 
 task test, "Test":
   exec "nim c -r tests/tests"

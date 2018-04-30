@@ -1,6 +1,8 @@
 ## Two-level table
 ## This is auto-generated. Do not modify it
 
+import unicode
+
 const graphemeIndexes = [
   0'i8,
   1'i8,
@@ -8838,7 +8840,7 @@ const graphemeTypes = [
 
 const blockSize = 128
 
-proc graphemeType*(chr: int): int =
-  assert chr < 0x110000
-  let blockOffset = graphemeIndexes[chr div blockSize]
-  return graphemeTypes[blockOffset][chr mod blockSize]
+proc graphemeType*(r: Rune): int =
+  assert r.int < 0x110000
+  let blockOffset = graphemeIndexes[r.int32 div blockSize]
+  return graphemeTypes[blockOffset][r.int32 mod blockSize]
