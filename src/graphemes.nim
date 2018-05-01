@@ -2,7 +2,6 @@
 ## handle unicode grapheme clusters
 
 import unicode
-import algorithm  # todo: remove
 
 from graphemes/private/grapheme_break import graphemeType
 
