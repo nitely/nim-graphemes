@@ -1,7 +1,7 @@
 import strutils
 
 const
-  unicodeVersion* = "10.0.0"
+  unicodeVersion* = "11.0.0"
   specVersion* = "29"
   specURL* = "http://www.unicode.org/reports/tr29/"
 
@@ -15,12 +15,9 @@ const pattern =
     "(?:Prepend* " &
       "(?:" &
         "(?:L* V+ T* | L* LV V* T* | L* LVT T* | L+ | T+) | " &
-        "(?:" &
-          "(?:E_Base | E_Base_GAZ) Extend* E_Modifier | " &
-          "ZWJ (?:Glue_After_Zwj | E_Base_GAZ Extend* E_Modifier?)" &
-        ") | " &
+        "(?:Extended_Pictographic (?:Extend* ZWJ Extended_Pictographic)+) | " &
         "Regional_Indicator Regional_Indicator? | " &
-        "(?: L | V | T | LV | LVT | E_Base | E_Modifier | Glue_After_Zwj | E_Base_GAZ | Any )" &  # Anything
+        "(?: L | V | T | LV | LVT | Extended_Pictographic | Any )" &  # Anything
       ")? " &
     ")? (?:SpacingMark | Extend | ZWJ)* " &
   ")"
@@ -33,12 +30,9 @@ const patternReversed =
     "(?:SpacingMark | Extend | ZWJ)* (?:" &
       "(?:" &
         "(?:T* V+ L* | T* V* LV L* | T* LVT L* | L+ | T+) | " &
-        "(?:" &
-          "E_Modifier Extend* (?:E_Base | E_Base_GAZ) | " &
-          "(?:Glue_After_Zwj | E_Modifier? Extend* E_Base_GAZ) ZWJ" &
-        ") | " &
+        "(?:(?:Extended_Pictographic ZWJ Extend*)+ Extended_Pictographic) | " &
         "Regional_Indicator Regional_Indicator? | " &
-        "(?: L | V | T | LV | LVT | E_Base | E_Modifier | Glue_After_Zwj | E_Base_GAZ | Any )" &
+        "(?: L | V | T | LV | LVT | Extended_Pictographic | Any )" &
       ")? " &
     "Prepend*)? " &
   ")"
@@ -47,10 +41,11 @@ const patternReversed =
 const identifiers* = [
   "__EOF__",  # Reserved for the DFA
   "Regional_Indicator",
-  "E_Base_GAZ",
-  "E_Base",
-  "E_Modifier",
-  "Glue_After_Zwj",
+  #"E_Base_GAZ",
+  #"E_Base",
+  #"E_Modifier",
+  #"Glue_After_Zwj",
+  "Extended_Pictographic",
   "SpacingMark",
   "Control",
   "Extend",

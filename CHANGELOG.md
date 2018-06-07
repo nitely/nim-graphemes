@@ -1,3 +1,9 @@
+v0.4.0
+==================
+
+* Update to unicode 11
+* Fix emoji sequences (issue #8)
+
 v0.3.0
 ==================
 

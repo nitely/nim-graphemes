@@ -27,6 +27,7 @@ for c in graphemes("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"):
 
 assert graphemesCount("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲") == 10
 assert graphemesCount("ю́") == 1
+assert graphemesCount("👨‍👩‍👧‍👦") == 1
 
 # Get number of bytes the grapheme at index 0 takes
 assert graphemeLenAt("u̲n̲d̲e̲r̲", 0) == 2

@@ -1,6 +1,6 @@
 import unittest, strutils, unicode, tables, algorithm
 import graphemes
-from graphemes/private/grapheme_break import graphemeType
+from graphemes/grapheme_break import graphemeType
 from ../gen/gen_grapheme_break import nil
 
 test "Test graphemes break":
@@ -45,7 +45,7 @@ test "Test graphemes break in reverse":
 
 test "Test generated tables":
   var
-    data = gen_grapheme_break.parse("./gen/GraphemeBreakProperty.txt")
+    data = gen_grapheme_break.buildData()
     i = 0
   for cp, tcp in data:
     check(graphemeType(cp.Rune) == tcp)
@@ -104,7 +104,6 @@ test "Test graphemesCount":
   check(graphemesCount("ю́") == 1)
   check(graphemesCount("\r\L") == 1)
 
-# todo: fix!
 test "Test emojis":
   # Emoji Version 1.0
 
@@ -116,9 +115,9 @@ test "Test emojis":
   # Emoji Version 2.0
 
   # 6 families
-  #check(graphemesCount("👪👨‍👧‍👧👩‍👩‍👧‍👦👨‍👨‍👦‍👦👨‍👧👩‍👦‍👦") == 6)
+  check(graphemesCount("👪👨‍👧‍👧👩‍👩‍👧‍👦👨‍👨‍👦‍👦👨‍👧👩‍👦‍👦") == 6)
   # 1 family of 4
-  #check(graphemesCount("👨‍👩‍👧‍👦") == 1)
+  check(graphemesCount("👨‍👩‍👧‍👦") == 1)
   # 6 hands with skin tone
   check(graphemesCount("👋👋🏻👋🏼👋🏽👋🏾👋🏿") == 6)
   # 1 hand with skin tone
@@ -132,14 +131,17 @@ test "Test emojis":
   # Emoji Version 4.0
 
   # Man Health Worker
-  #check(graphemesCount("👨‍⚕️") == 1)
+  check(graphemesCount("👨‍⚕️") == 1)
 
   # Emoji Version 5.0
 
   # Man Vampire: Light Skin Tone
-  #check(graphemesCount("🧛🏻‍♂️") == 1)
+  check(graphemesCount("🧛🏻‍♂️") == 1)
 
   # Emoji Version 11.0
 
   # Pirate Flag
-  #check(graphemesCount("🏴‍☠️") == 1)
+  check(graphemesCount("🏴‍☠️") == 1)
+
+  # Pride Flag (4 runes)
+  check(graphemesCount("🏳️‍🌈") == 1)
