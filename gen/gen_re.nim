@@ -17,7 +17,7 @@ const pattern =
         "(?:L* V+ T* | L* LV V* T* | L* LVT T* | L+ | T+) | " &
         "(?:Extended_Pictographic (?:Extend* ZWJ Extended_Pictographic)+) | " &
         "Regional_Indicator Regional_Indicator? | " &
-        "(?: L | V | T | LV | LVT | Extended_Pictographic | Any )" &  # Anything
+        "(?: L | V | T | LV | LVT | Extended_Pictographic | Any )" & # Anything
       ")? " &
     ")? (?:SpacingMark | Extend | ZWJ)* " &
   ")"

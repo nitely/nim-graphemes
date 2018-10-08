@@ -1,3 +1,8 @@
+v0.4.1
+==================
+
+* Add support for Nim 0.19 (no changes were required)
+
 v0.4.0
 ==================
 
