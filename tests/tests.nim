@@ -145,3 +145,11 @@ test "Test emojis":
 
   # Pride Flag (4 runes)
   check(graphemesCount("🏳️‍🌈") == 1)
+
+test "Test grapheme iterator":
+  let expected = [
+    "u̲", "n̲", "d̲", "e̲", "r̲", "l̲", "i̲", "n̲", "e̲", "d̲"]
+  var i = 0
+  for c in graphemes("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"):
+    check c == expected[i]
+    inc i

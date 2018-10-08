@@ -14,7 +14,7 @@ nimble install graphemes
 
 ## Compatibility
 
-* Nim +0.18.0
+* Nim 0.18.0, +0.19.0
 
 
 ## Usage
@@ -22,8 +22,14 @@ nimble install graphemes
 ```nim
 import graphemes
 
-for c in graphemes("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"):
-  echo c
+# Iterate over graphemes
+block:
+  let expected = [
+    "u̲", "n̲", "d̲", "e̲", "r̲", "l̲", "i̲", "n̲", "e̲", "d̲"]
+  var i = 0
+  for c in graphemes("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"):
+    doAssert c == expected[i]
+    inc i
 
 assert graphemesCount("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲") == 10
 assert graphemesCount("ю́") == 1
@@ -33,6 +39,7 @@ assert graphemesCount("👨‍👩‍👧‍👦") == 1
 assert graphemeLenAt("u̲n̲d̲e̲r̲", 0) == 2
 assert graphemeLenAt("ю́", 0) == 4
 
+# Remove last grapheme
 block:
   var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
   s.setLen(s.len - s.graphemeLenAt(^1))
