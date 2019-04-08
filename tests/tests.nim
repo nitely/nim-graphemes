@@ -1,4 +1,5 @@
-import unittest, strutils, unicode, tables, algorithm
+import unittest, strutils, tables, algorithm
+import unicode except strip
 import graphemes
 from graphemes/grapheme_break import graphemeType
 from ../gen/gen_grapheme_break import nil
