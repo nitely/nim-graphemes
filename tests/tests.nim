@@ -154,3 +154,7 @@ test "Test grapheme iterator":
   for c in graphemes("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"):
     check c == expected[i]
     inc i
+
+test "Test all code points":
+  for i in 0 .. 0x10FFFF:
+    discard graphemes(Rune(i).toUTF8)

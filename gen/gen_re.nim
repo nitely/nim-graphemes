@@ -1,7 +1,7 @@
 import strutils
 
 const
-  unicodeVersion* = "11.0.0"
+  unicodeVersion* = "12.1.0"
   specVersion* = "29"
   specURL* = "http://www.unicode.org/reports/tr29/"
 
