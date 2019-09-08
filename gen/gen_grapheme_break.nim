@@ -136,8 +136,19 @@ const graphemeTypes = [
 
 const blockSize = $#
 
-proc graphemeType*(r: Rune): int =
+proc genAsciiTypes(): array[128, int8] =
+  assert blockSize <= 128
+  const blockOffset = 0
+  const types = graphemeTypes[blockOffset]
+  for i in 0 .. result.len-1:
+    result[i] = types[i]
+
+const asciiTypes = genAsciiTypes()
+
+proc graphemeType*(r: Rune): int {.inline.} =
   assert r.int <= 0x10FFFF
+  if r.int < 128:
+    return asciiTypes[r.int]
   let blockOffset = graphemeIndexes[r.int32 div blockSize].int
   return graphemeTypes[blockOffset][r.int32 mod blockSize].int
 """
