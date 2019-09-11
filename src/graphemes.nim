@@ -1,5 +1,6 @@
 ## This module provides support to
-## handle unicode grapheme clusters
+## handle unicode extended grapheme clusters,
+## as in "user perceived characters".
 
 import unicode
 
@@ -75,13 +76,12 @@ iterator graphemesImpl(s: string): Slice[int] {.inline.} =
     b = n
 
 iterator graphemes*(s: string): string {.inline.} =
-  ## Iterates over any grapheme (i.e user perceived character)
-  ## of the string text returning graphemes
+  ## Iterate ``s`` returning graphemes
   for slc in s.graphemesImpl():
     yield s[slc]
 
 proc graphemes*(s: string): seq[string] =
-  ## Return a sequence containing the graphemes in text
+  ## Return a sequence of graphemes from ``s``
   result = newSeqOfCap[string](s.len)
   for c in graphemes(s):
     result.add(c)
@@ -120,9 +120,7 @@ template breakRi() {.dirty.} =
     break
 
 iterator graphemesReversed*(s: string): string {.inline.} =
-  ## Iterates in reverse order
-  ## over any grapheme (i.e user perceived character)
-  ## of the string text returning graphemes
+  ## Iterate ``s`` returning the graphemes in reverse order
   var
     state = dfaBw[0]
     t, nxt, ri = 0
@@ -154,14 +152,14 @@ iterator graphemesReversed*(s: string): string {.inline.} =
     a = n
 
 proc graphemesReversed*(s: string): seq[string] =
-  ## Return a sequence containing the graphemes in text
+  ## Return a sequence of graphemes from ``s`` in reverse order
   result = newSeqOfCap[string](s.len)
   for c in graphemesReversed(s):
     result.add(c)
 
 proc graphemeLenAt*(s: string, i: Natural): int =
-  ## Return the number of bytes the
-  ## grapheme starting at ``s[i]`` takes
+  ## Return the number of bytes in the
+  ## grapheme starting at ``s[i]``
   result = i
   var
     state = dfa[0]
@@ -177,8 +175,8 @@ proc graphemeLenAt*(s: string, i: Natural): int =
   dec(result, i)
 
 proc graphemeLenAt*(s: string, i: BackwardsIndex): int =
-  ## Return the number of bytes the
-  ## grapheme ending at ``s[^i]`` takes
+  ## Return the number of bytes in the
+  ## grapheme ending at ``s[^i]``
   assert i.int > 0
   result = len(s) - i.int
   var
@@ -210,11 +208,11 @@ proc graphemesCount*(s: string): int =
 proc graphemesSubStr*(
   s: string, first: int, last = int.high
 ): string =
-  ## Return the sub-string of graphemes
-  ## starting at ``first`` grapheme and
-  ## ending at ``last`` grapheme. Return
+  ## Return the sub-string
+  ## starting at the ``first`` grapheme and
+  ## ending at the ``last`` grapheme. Return
   ## from ``first`` to the end of the string,
-  ## if ``last`` is not passed. Beware this
+  ## if ``last`` is not provided. Beware this
   ## function always iterates from the start
   ## of the string to get to the ``first`` grapheme.
   if last < first:

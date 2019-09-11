@@ -847,7 +847,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">This module provides support to handle unicode grapheme clusters</p>
+  <p class="module-desc">This module provides support to handle unicode extended grapheme clusters, as in &quot;user perceived characters&quot;.</p>
   <div class="section" id="6">
 <h1><a class="toc-backref" href="#6">Imports</a></h1>
 <dl class="item">
@@ -860,28 +860,28 @@ function main() {
 <dt><pre><span class="Keyword">proc</span> <a href="#graphemes%2Cstring"><span class="Identifier">graphemes</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Return a sequence containing the graphemes in text
+Return a sequence of graphemes from <tt class="docutils literal"><span class="pre">s</span></tt>
 
 </dd>
 <a id="graphemesReversed,string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#graphemesReversed%2Cstring"><span class="Identifier">graphemesReversed</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Return a sequence containing the graphemes in text
+Return a sequence of graphemes from <tt class="docutils literal"><span class="pre">s</span></tt> in reverse order
 
 </dd>
 <a id="graphemeLenAt,string,Natural"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#graphemeLenAt%2Cstring%2CNatural"><span class="Identifier">graphemeLenAt</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">i</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Return the number of bytes the grapheme starting at <tt class="docutils literal"><span class="pre">s[i]</span></tt> takes
+Return the number of bytes in the grapheme starting at <tt class="docutils literal"><span class="pre">s[i]</span></tt>
 
 </dd>
 <a id="graphemeLenAt,string,BackwardsIndex"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#graphemeLenAt%2Cstring%2CBackwardsIndex"><span class="Identifier">graphemeLenAt</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">i</span><span class="Other">:</span> <span class="Identifier">BackwardsIndex</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Return the number of bytes the grapheme ending at <tt class="docutils literal"><span class="pre">s[^i]</span></tt> takes
+Return the number of bytes in the grapheme ending at <tt class="docutils literal"><span class="pre">s[^i]</span></tt>
 
 </dd>
 <a id="graphemesCount,string"></a>
@@ -895,7 +895,7 @@ Return the number of graphemes in <tt class="docutils literal"><span class="pre"
 <dt><pre><span class="Keyword">proc</span> <a href="#graphemesSubStr%2Cstring%2Cint"><span class="Identifier">graphemesSubStr</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">first</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">last</span> <span class="Other">=</span> <span class="Identifier">int</span><span class="Other">.</span><span class="Identifier">high</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Return the sub-string of graphemes starting at <tt class="docutils literal"><span class="pre">first</span></tt> grapheme and ending at <tt class="docutils literal"><span class="pre">last</span></tt> grapheme. Return from <tt class="docutils literal"><span class="pre">first</span></tt> to the end of the string, if <tt class="docutils literal"><span class="pre">last</span></tt> is not passed. Beware this function always iterates from the start of the string to get to the <tt class="docutils literal"><span class="pre">first</span></tt> grapheme.
+Return the sub-string starting at the <tt class="docutils literal"><span class="pre">first</span></tt> grapheme and ending at the <tt class="docutils literal"><span class="pre">last</span></tt> grapheme. Return from <tt class="docutils literal"><span class="pre">first</span></tt> to the end of the string, if <tt class="docutils literal"><span class="pre">last</span></tt> is not provided. Beware this function always iterates from the start of the string to get to the <tt class="docutils literal"><span class="pre">first</span></tt> grapheme.
 
 </dd>
 
@@ -907,14 +907,14 @@ Return the sub-string of graphemes starting at <tt class="docutils literal"><spa
 <dt><pre><span class="Keyword">iterator</span> <a href="#graphemes.i%2Cstring"><span class="Identifier">graphemes</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Iterates over any grapheme (i.e user perceived character) of the string text returning graphemes
+Iterate <tt class="docutils literal"><span class="pre">s</span></tt> returning graphemes
 
 </dd>
 <a id="graphemesReversed.i,string"></a>
 <dt><pre><span class="Keyword">iterator</span> <a href="#graphemesReversed.i%2Cstring"><span class="Identifier">graphemesReversed</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Iterates in reverse order over any grapheme (i.e user perceived character) of the string text returning graphemes
+Iterate <tt class="docutils literal"><span class="pre">s</span></tt> returning the graphemes in reverse order
 
 </dd>
 
@@ -927,7 +927,7 @@ Iterates in reverse order over any grapheme (i.e user perceived character) of th
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-09-11 18:51:40 UTC</small>
+        <small>Made with Nim. Generated: 2019-09-11 19:10:29 UTC</small>
       </div>
     </div>
   </div>
