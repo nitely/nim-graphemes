@@ -825,6 +825,8 @@ function main() {
     title="graphemeLenAt(s: string; i: BackwardsIndex): int"><wbr />grapheme<wbr />Len<wbr />At<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#graphemesCount%2Cstring"
     title="graphemesCount(s: string): int"><wbr />graphemes<wbr />Count<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#graphemesSubStr%2Cstring%2Cint"
+    title="graphemesSubStr(s: string; first: int; last = int.high): string"><wbr />graphemes<wbr />Sub<wbr />Str<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -889,6 +891,13 @@ Return the number of bytes the grapheme ending at <tt class="docutils literal"><
 Return the number of graphemes in <tt class="docutils literal"><span class="pre">s</span></tt>
 
 </dd>
+<a id="graphemesSubStr,string,int"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#graphemesSubStr%2Cstring%2Cint"><span class="Identifier">graphemesSubStr</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">first</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">last</span> <span class="Other">=</span> <span class="Identifier">int</span><span class="Other">.</span><span class="Identifier">high</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Return the sub-string of graphemes starting at <tt class="docutils literal"><span class="pre">first</span></tt> grapheme and ending at <tt class="docutils literal"><span class="pre">last</span></tt> grapheme. Return from <tt class="docutils literal"><span class="pre">first</span></tt> to the end of the string, if <tt class="docutils literal"><span class="pre">last</span></tt> is not passed. Beware this function always iterates from the start of the string to get to the <tt class="docutils literal"><span class="pre">first</span></tt> grapheme.
+
+</dd>
 
 </dl></div>
 <div class="section" id="15">
@@ -918,7 +927,7 @@ Iterates in reverse order over any grapheme (i.e user perceived character) of th
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-09-08 15:53:36 UTC</small>
+        <small>Made with Nim. Generated: 2019-09-11 18:51:40 UTC</small>
       </div>
     </div>
   </div>
