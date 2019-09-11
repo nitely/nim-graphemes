@@ -33,7 +33,7 @@ block:
 
 assert graphemesCount("u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲") == 10
 assert graphemesCount("ю́") == 1
-assert graphemesCount("👨‍👩‍👧‍👦") == 1
+assert graphemesCount("👨‍👩‍👧‍👦") == 1  # Family of 4 emoji
 
 # Get number of bytes the grapheme at index 0 takes
 assert graphemeLenAt("u̲n̲d̲e̲r̲", 0) == 2
@@ -44,6 +44,13 @@ block:
   var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
   s.setLen(s.len - s.graphemeLenAt(^1))
   assert s == "u̲n̲d̲e̲r̲l̲i̲n̲e̲"
+
+# Get sub-string
+block:
+  # This string contains the following emoji:
+  # "flag, family, yawn, vampire, pinch, and diving mask"
+  const s = "🇦🇷👨‍👩‍👧‍👦🥱🧛🏻‍♂️🤏🤿"
+  assert s.graphemesSubStr(1, 3) == "👨‍👩‍👧‍👦🥱🧛🏻‍♂️"
 ```
 |  
 |  

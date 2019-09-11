@@ -52,9 +52,7 @@ const
     [1'i8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
   ]
 
-iterator graphemes*(s: string): string {.inline.} =
-  ## Iterates over any grapheme (i.e user perceived character)
-  ## of the string text returning graphemes
+iterator graphemesImpl(s: string): Slice[int] {.inline.} =
   var
     state = dfa[0]
     r: Rune
@@ -72,9 +70,15 @@ iterator graphemes*(s: string): string {.inline.} =
       b = n
       state = dfa[nxt]
     assert b > a
-    yield s[a ..< b]
+    yield a ..< b
     a = b
     b = n
+
+iterator graphemes*(s: string): string {.inline.} =
+  ## Iterates over any grapheme (i.e user perceived character)
+  ## of the string text returning graphemes
+  for slc in s.graphemesImpl():
+    yield s[slc]
 
 proc graphemes*(s: string): seq[string] =
   ## Return a sequence containing the graphemes in text
@@ -200,7 +204,32 @@ proc graphemeLenAt*(s: string, i: BackwardsIndex): int =
 proc graphemesCount*(s: string): int =
   ## Return the number of graphemes in ``s``
   result = 0
-  var n = 0
-  while n < len(s):
-    inc(n, graphemeLenAt(s, n))
+  for _ in s.graphemesImpl():
     inc result
+
+proc graphemesSubStr*(
+  s: string, first: int, last = int.high
+): string =
+  ## Return the sub-string of graphemes
+  ## starting at ``first`` grapheme and
+  ## ending at ``last`` grapheme. Return
+  ## from ``first`` to the end of the string,
+  ## if ``last`` is not passed. Beware this
+  ## function always iterates from the start
+  ## of the string to get to the ``first`` grapheme.
+  if last < first:
+    return ""
+  var
+    i = s.len
+    j = s.len-1
+    count = 0
+  for slc in s.graphemesImpl():
+    if count == first:
+      i = slc.a
+      if last == int.high:
+        break
+    if count == last:
+      j = slc.b
+      break
+    inc count
+  return s[i .. j]
