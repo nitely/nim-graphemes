@@ -158,3 +158,33 @@ test "Test grapheme iterator":
 test "Test all code points":
   for i in 0 .. 0x10FFFF:
     discard graphemes(Rune(i).toUTF8)
+
+test "Test graphemes sub string":
+  check "".graphemesSubStr(0, 10) == ""
+  check "".graphemesSubStr(0, -1) == ""
+  check "abc".graphemesSubStr(0, 10) == "abc"
+  check "abc".graphemesSubStr(0, -1) == ""
+  check "abc".graphemesSubStr(10) == ""
+  check "abc".graphemesSubStr(10, 100) == ""
+  check "abc".graphemesSubStr(10, 1) == ""
+  block:
+    const s = "abcd"
+    check s.graphemesSubStr(0, 0) == "a"
+    check s.graphemesSubStr(3, 3) == "d"
+    check s.graphemesSubStr(0) == s
+    check s.graphemesSubStr(1) == "bcd"
+    check s.graphemesSubStr(1, 2) == "bc"
+  block:
+    # flag, family, yawn, vampire, pinch, diving mask
+    const s = "🇦🇷👨‍👩‍👧‍👦🥱🧛🏻‍♂️🤏🤿"
+    check s.graphemesSubStr(0, 0) == "🇦🇷"
+    check s.graphemesSubStr(1, 1) == "👨‍👩‍👧‍👦"
+    check s.graphemesSubStr(2, 2) == "🥱"
+    check s.graphemesSubStr(3, 3) == "🧛🏻‍♂️"
+    check s.graphemesSubStr(4, 4) == "🤏"
+    check s.graphemesSubStr(5, 5) == "🤿"
+    check s.graphemesSubStr(0) == s
+    check s.graphemesSubStr(1) == "👨‍👩‍👧‍👦🥱🧛🏻‍♂️🤏🤿"
+    check s.graphemesSubStr(1, 3) == "👨‍👩‍👧‍👦🥱🧛🏻‍♂️"
+    check s.graphemesSubStr(2, 3) == "🥱🧛🏻‍♂️"
+  
