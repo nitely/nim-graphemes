@@ -55,21 +55,20 @@ const
 
 iterator graphemesImpl(s: string): Slice[int] {.inline.} =
   var
-    state = dfa[0]
     r: Rune
-    a, b, n = 0
+    state, a, b, n = 0
   while n < s.len or a < b:
     while n < s.len:
       fastRuneAt(s, n, r, true)
       let
         t = graphemeType(r)
-        nxt = state[t]
-      if nxt == -1:
-        assert state[0] == 1
-        state = dfa[dfa[0][t]]
+        next = dfa[state][t]
+      if next == -1:
+        assert dfa[state][0] == 1
+        state = dfa[0][t]
         break
       b = n
-      state = dfa[nxt]
+      state = next
     assert b > a
     yield a ..< b
     a = b
@@ -97,7 +96,7 @@ proc bwRuneAt(s: string, n: var int, r: var Rune) =
 
 const riType = 1
 
-template breakRi() {.dirty.} =
+template breakRi(): untyped {.dirty.} =
   ## Needed when going backwards only.
   ## Break a Regional Indicator (RI)
   ## if there's an even number of
@@ -106,7 +105,7 @@ template breakRi() {.dirty.} =
   ## the DFA doesn't support assertions.
   ## Regex: (?:RI (?<=(?:RI RI)+))
   assert t == riType
-  assert state[0] == 1
+  assert dfaBw[state][0] == 1
   ri = 0
   while n >= 0:
     bwRuneAt(s, n, r)
@@ -122,30 +121,29 @@ template breakRi() {.dirty.} =
 iterator graphemesReversed*(s: string): string {.inline.} =
   ## Iterate ``s`` returning the graphemes in reverse order
   var
-    state = dfaBw[0]
-    t, nxt, ri = 0
+    state, t, nxt, ri = 0
     r: Rune
     a, b, n, nn = s.len-1
   while n >= 0 or a < b:
     while n >= 0:
-      if state[0] == 1:  # safe break
+      if dfaBw[state][0] == 1:  # safe break
         nn = n
       if t == riType:
         breakRi()
       bwRuneAt(s, n, r)
       t = graphemeType(r)
-      nxt = state[t]
+      nxt = dfaBw[state][t]
       if nxt == -1:
         break
       a = n
-      state = dfaBw[nxt]
+      state = nxt
     # dead end, backtrack to safe break
-    if state[0] == -1 and n != nn:
+    if dfaBw[state][0] == -1 and n != nn:
       a = nn
       n = nn
       bwRuneAt(s, n, r)
       t = graphemeType(r)
-    state = dfaBw[dfaBw[0][t]]
+    state = dfaBw[0][t]
     assert a < b
     yield s[a+1 .. b]
     b = a
@@ -162,15 +160,14 @@ proc graphemeLenAt*(s: string, i: Natural): int =
   ## grapheme starting at ``s[i]``
   result = i
   var
-    state = dfa[0]
     r: Rune
     n = i
-    nxt = 0
+    state, nxt = 0
   while n < len(s):
     fastRuneAt(s, n, r, true)
-    nxt = state[graphemeType(r)]
+    nxt = dfa[state][graphemeType(r)]
     if nxt == -1: break
-    state = dfa[nxt]
+    state = nxt
     result = n
   dec(result, i)
 
@@ -180,22 +177,21 @@ proc graphemeLenAt*(s: string, i: BackwardsIndex): int =
   assert i.int > 0
   result = len(s) - i.int
   var
-    state = dfaBw[0]
     r: Rune
     n, nn = result
-    t, nxt, ri = 0
+    state, t, nxt, ri = 0
   while n >= 0:
-    if state[0] == 1:  # safe break
+    if dfaBw[state][0] == 1:  # safe break
       nn = n
     if t == riType:
       breakRi()
     bwRuneAt(s, n, r)
     t = graphemeType(r)
-    nxt = state[t]
+    nxt = dfaBw[state][t]
     if nxt == -1: break
-    state = dfaBw[nxt]
+    state = nxt
     result = n
-  if state[0] == -1:
+  if dfaBw[state][0] == -1:
     result = nn
   result = len(s) - i.int - result
 
