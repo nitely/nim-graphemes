@@ -5,37 +5,40 @@ const
   specVersion* = "29"
   specURL* = "http://www.unicode.org/reports/tr29/"
 
-# All identifiers must be replaced by single
-# characters in order to build the actual regex expression.
-# *These regexes were manually crafted* based on the spec!
+# From http://www.unicode.org/reports/tr29/#Table_Combining_Char_Sequences_and_Grapheme_Clusters
+# [^Control CR LF]: Any ...
 const pattern =
-  "(?:" &
-    "CR LF | " &
-    "(?:Control | CR | LF) | " &
-    "(?:Prepend* " &
-      "(?:" &
-        "(?:L* V+ T* | L* LV V* T* | L* LVT T* | L+ | T+) | " &
-        "(?:Extended_Pictographic (?:Extend* ZWJ Extended_Pictographic)+) | " &
-        "Regional_Indicator Regional_Indicator? | " &
-        "(?: L | V | T | LV | LVT | Extended_Pictographic | Any )" & # Anything
-      ")? " &
-    ")? (?:SpacingMark | Extend | ZWJ)* " &
-  ")"
+  """
+  (
+    CR LF
+    | (Control | CR | LF)
+    | Prepend*
+    (
+      (L* (V+ | LV V* | LVT) T* | L+ | T+)
+      | Regional_Indicator Regional_Indicator
+      | Extended_Pictographic (Extend* ZWJ Extended_Pictographic)*
+      | (Prepend | Any | Regional_Indicator | Extend | ZWJ | SpacingMark)
+    )
+    (Extend | ZWJ | SpacingMark)*
+  )
+  """
 
 # For backward matching (i.e: reverse iterator, etc)
 const patternReversed =
-  "(?:" &
-    "LF CR | " &
-    "(?:Control | CR | LF) | " &
-    "(?:SpacingMark | Extend | ZWJ)* (?:" &
-      "(?:" &
-        "(?:T* V+ L* | T* V* LV L* | T* LVT L* | L+ | T+) | " &
-        "(?:(?:Extended_Pictographic ZWJ Extend*)+ Extended_Pictographic) | " &
-        "Regional_Indicator Regional_Indicator? | " &
-        "(?: L | V | T | LV | LVT | Extended_Pictographic | Any )" &
-      ")? " &
-    "Prepend*)? " &
-  ")"
+  """
+  (
+    LF CR
+    | (Control | CR | LF)
+    | (Extend | ZWJ | SpacingMark)*
+    (
+      (T* (V+ | V* LV | LVT) L* | L+ | T+)
+      | Regional_Indicator Regional_Indicator
+      | (Extended_Pictographic ZWJ Extend*)* Extended_Pictographic
+      | (Prepend | Any | Regional_Indicator | Extend | ZWJ | SpacingMark)
+    )
+    Prepend*
+  )
+  """
 
 # IDs must be in non-overlapping substring order (i.e longest to shortest)
 const identifiers* = [
@@ -67,11 +70,12 @@ for c in 'a' .. 'z':
 proc buildRePattern*(p: string): string =
   assert len(identifiers) <= len(letters)
   result = p
-
+  result = replace(result, "(", "(?:")
   for i, id in identifiers:
     result = replace(result, id, "" & letters[i])
-
   result = replace(result, " ")
+  result = replace(result, "\p")
+  result = replace(result, "\n")
 
 when isMainModule:
   echo "pattern:"
