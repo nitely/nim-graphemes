@@ -53,7 +53,8 @@ const
     [1'i8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
   ]
 
-iterator graphemesImpl(s: string): Slice[int] {.inline.} =
+iterator graphemeBounds*(s: string): Slice[int] {.inline.} =
+  ## Return grapheme boundaries in `s`. Boundaries are inclusive
   var
     r: Rune
     state, a, b, n = 0
@@ -64,19 +65,19 @@ iterator graphemesImpl(s: string): Slice[int] {.inline.} =
         t = graphemeType(r)
         next = dfa[state][t]
       if next == -1:
-        assert dfa[state][0] == 1
+        doAssert dfa[state][0] == 1
         state = dfa[0][t]
         break
       b = n
       state = next
-    assert b > a
+    doAssert b > a
     yield a ..< b
     a = b
     b = n
 
 iterator graphemes*(s: string): string {.inline.} =
   ## Iterate ``s`` returning graphemes
-  for slc in s.graphemesImpl():
+  for slc in s.graphemeBounds:
     yield s[slc]
 
 proc graphemes*(s: string): seq[string] =
@@ -198,7 +199,7 @@ proc graphemeLenAt*(s: string, i: BackwardsIndex): int =
 proc graphemesCount*(s: string): int =
   ## Return the number of graphemes in ``s``
   result = 0
-  for _ in s.graphemesImpl():
+  for _ in s.graphemeBounds:
     inc result
 
 proc graphemesSubStr*(
@@ -217,7 +218,7 @@ proc graphemesSubStr*(
     i = s.len
     j = s.len-1
     count = 0
-  for slc in s.graphemesImpl():
+  for slc in s.graphemeBounds:
     if count == first:
       i = slc.a
       if last == int.high:
