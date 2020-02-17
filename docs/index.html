@@ -99,6 +99,23 @@ input#searchInput {
   width: 80%;
 }
 
+/*
+ * Some custom formatting for input forms.
+ * This also fixes input form colors on Firefox with a dark system theme on Linux.
+ */
+input {
+  -moz-appearance: none;
+  color: #333;
+  background-color: #f8f8f8;
+  border: 1px solid #aaa;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+  font-size: 0.9em;
+  padding: 6px;
+}
+input:focus {
+  border: 1px solid #1fa0eb;
+  box-shadow: 0 0 2px #1fa0eb;
+}
 
 /* Docgen styles */
 /* Links */
@@ -833,7 +850,9 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#15" id="65">Iterators</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#graphemes.i%2Cstring"
+      <li><a class="reference" href="#graphemeBounds.i%2Cstring"
+    title="graphemeBounds(s: string): Slice[int]"><wbr />grapheme<wbr />Bounds<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#graphemes.i%2Cstring"
     title="graphemes(s: string): string"><wbr />graphemes<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#graphemesReversed.i%2Cstring"
     title="graphemesReversed(s: string): string"><wbr />graphemes<wbr />Reversed<span class="attachedType"></span></a></li>
@@ -903,6 +922,13 @@ Return the sub-string starting at the <tt class="docutils literal"><span class="
 <div class="section" id="15">
 <h1><a class="toc-backref" href="#15">Iterators</a></h1>
 <dl class="item">
+<a id="graphemeBounds.i,string"></a>
+<dt><pre><span class="Keyword">iterator</span> <a href="#graphemeBounds.i%2Cstring"><span class="Identifier">graphemeBounds</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Slice</span><span class="Other">[</span><span class="Identifier">int</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Return grapheme boundaries in <tt class="docutils literal"><span class="pre">s</span></tt>. Boundaries are inclusive
+
+</dd>
 <a id="graphemes.i,string"></a>
 <dt><pre><span class="Keyword">iterator</span> <a href="#graphemes.i%2Cstring"><span class="Identifier">graphemes</span></a><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">inline</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
@@ -927,7 +953,7 @@ Iterate <tt class="docutils literal"><span class="pre">s</span></tt> returning t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-09-11 19:10:29 UTC</small>
+        <small>Made with Nim. Generated: 2020-02-17 01:03:10 UTC</small>
       </div>
     </div>
   </div>
