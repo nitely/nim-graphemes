@@ -1,3 +1,11 @@
+v0.6.0
+==================
+
+* Add `graphemeBounds`
+* Update grapheme regexes
+* Perf improvements
+* Drop Nim 0.18 support
+
 v0.5.0
 ==================
 

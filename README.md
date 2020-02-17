@@ -14,7 +14,7 @@ nimble install graphemes
 
 ## Compatibility
 
-* Nim 0.18.0, +0.19.0
+* Nim 0.19, 0.20, +1.0
 
 
 ## Usage
