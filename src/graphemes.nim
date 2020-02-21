@@ -3,6 +3,7 @@
 ## as in "user perceived characters".
 
 import unicode
+import algorithm
 
 import graphemes/grapheme_break
 
@@ -71,7 +72,8 @@ const
   ]
 
 iterator graphemeBounds*(s: string): Slice[int] {.inline.} =
-  ## Return grapheme boundaries in `s`. Boundaries are inclusive
+  ## Return grapheme boundaries in `s`.
+  ## Boundaries are inclusive
   var
     r: Rune
     state, a, b, n = 0
@@ -98,7 +100,7 @@ iterator graphemes*(s: string): string {.inline.} =
     yield s[slc]
 
 proc graphemes*(s: string): seq[string] =
-  ## Return a sequence of graphemes from ``s``
+  ## Return the grapheme sequence of ``s``
   result = newSeqOfCap[string](s.len)
   for c in graphemes(s):
     result.add(c)
@@ -136,8 +138,9 @@ template breakRi(): untyped {.dirty.} =
     bwRuneAt(s, n, r)
     break
 
-iterator graphemesReversed*(s: string): string {.inline.} =
-  ## Iterate ``s`` returning the graphemes in reverse order
+iterator graphemeBoundsReversed*(s: string): Slice[int] {.inline.} =
+  ## Return grapheme boundaries of `s` in reverse order.
+  ## Boundaries are inclusive
   var
     state, t, nxt, ri = 0
     r: Rune
@@ -163,15 +166,26 @@ iterator graphemesReversed*(s: string): string {.inline.} =
       t = graphemeType(r)
     state = dfaBw[0][t]
     doAssert a < b
-    yield s[a+1 .. b]
+    yield a+1 .. b
     b = a
     a = n
 
+iterator graphemesReversed*(s: string): string {.inline.} =
+  ## Return graphemes of `s` in reverse order
+  for bounds in s.graphemeBoundsReversed:
+    yield s[bounds]
+
 proc graphemesReversed*(s: string): seq[string] =
-  ## Return a sequence of graphemes from ``s`` in reverse order
+  ## Return the grapheme sequence of ``s`` in reverse order
   result = newSeqOfCap[string](s.len)
   for c in graphemesReversed(s):
     result.add(c)
+
+func graphemesReverse*(s: var string) {.inline.} =
+  ## Reverse graphemes of `s` in-place
+  for bounds in s.graphemeBoundsReversed:
+    s.reverse(bounds.a, bounds.b)
+  s.reverse
 
 proc graphemeLenAt*(s: string, i: Natural): int =
   ## Return the number of bytes in the

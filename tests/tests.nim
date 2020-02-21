@@ -1,4 +1,6 @@
-import unittest, strutils, tables, algorithm
+import unittest
+import strutils
+import algorithm
 import unicode except strip
 import graphemes
 from graphemes/grapheme_break import graphemeType
@@ -187,4 +189,29 @@ test "Test graphemes sub string":
     check s.graphemesSubStr(1) == "👨‍👩‍👧‍👦🥱🧛🏻‍♂️🤏🤿"
     check s.graphemesSubStr(1, 3) == "👨‍👩‍👧‍👦🥱🧛🏻‍♂️"
     check s.graphemesSubStr(2, 3) == "🥱🧛🏻‍♂️"
-  
+
+test "Test reverse graphemes in-place":
+  block:
+    var s = "abc"
+    s.graphemesReverse
+    check s == "cba"
+  block:
+    var s = "🇦🇷"
+    s.graphemesReverse
+    check s == "🇦🇷"
+  block:
+    var s = "🇦🇷🇦🇷"
+    s.graphemesReverse
+    check s == "🇦🇷🇦🇷"
+  block:
+    var s = "🇦🇷🇺🇾🇨🇱"
+    s.graphemesReverse
+    check s == "🇨🇱🇺🇾🇦🇷"
+  block:
+    var s = "🇦🇷👨‍👩‍👧‍👦🥱🧛🏻‍♂️🤏🤿"
+    s.graphemesReverse
+    check s == "🤿🤏🧛🏻‍♂️🥱👨‍👩‍👧‍👦🇦🇷"
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    s.graphemesReverse
+    check s == "d̲e̲n̲i̲l̲r̲e̲d̲n̲u̲"

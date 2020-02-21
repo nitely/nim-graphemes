@@ -1,6 +1,6 @@
 # Package
 
-version = "0.6.0"
+version = "0.7.0"
 author = "Esteban Castro Borsani (@nitely)"
 description = "Grapheme aware string handling (Unicode tr29)"
 license = "MIT"

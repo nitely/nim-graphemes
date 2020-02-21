@@ -39,6 +39,12 @@ assert graphemesCount("👨‍👩‍👧‍👦") == 1  # Family of 4 emoji
 assert graphemeLenAt("u̲n̲d̲e̲r̲", 0) == 2
 assert graphemeLenAt("ю́", 0) == 4
 
+# Reverse graphemes
+block:
+  var s = "🇦🇷🇺🇾🇨🇱"
+  s.graphemesReverse
+  assert s == "🇨🇱🇺🇾🇦🇷"
+
 # Remove last grapheme
 block:
   var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"

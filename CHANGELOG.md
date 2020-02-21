@@ -1,6 +1,12 @@
 v0.6.0
 ==================
 
+* Add `graphemesReverse`
+* Add `graphemeBoundsReversed`
+
+v0.6.0
+==================
+
 * Add `graphemeBounds`
 * Update grapheme regexes
 * Perf improvements
