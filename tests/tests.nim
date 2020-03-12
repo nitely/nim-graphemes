@@ -149,6 +149,13 @@ test "Test emojis":
   # Pride Flag (4 runes)
   check(graphemesCount("🏳️‍🌈") == 1)
 
+  # Unicode 13
+  check graphemesCount("🥸") == 1
+  # Family + skin tone
+  check graphemesCount("👨🏽‍👩🏽‍👧🏽‍👦🏽") == 1
+  # 6 families with skin tone
+  check graphemesCount("👨🏻‍👩🏻‍👧🏻‍👦🏻👨🏼‍👩🏼‍👧🏼‍👦🏼👨🏽‍👩🏽‍👧🏽‍👦🏽👨🏾‍👩🏾‍👧🏾‍👦🏾👨🏿‍👩🏿‍👧🏿‍👦🏿") == 5
+
 test "Test grapheme iterator":
   let expected = [
     "u̲", "n̲", "d̲", "e̲", "r̲", "l̲", "i̲", "n̲", "e̲", "d̲"]
