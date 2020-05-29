@@ -261,3 +261,57 @@ proc graphemesSubStr*(
       break
     inc count
   return s[i .. j]
+
+proc graphemesTruncate*(s: var string, limit: Natural, suffix = "") =
+  ## Truncate a string to a given limit of graphems.
+  ## This is a no-op if the string graphemes are
+  ## lesser than/equal to the limit.
+  ## The result is empty if there is not enough room for
+  ## at least one grapheme + the suffix.
+  ## The result is never larger than the limit.
+  ## Beware arbitrary truncation may generate text
+  ## or a word with an unintended meaning.
+  runnableExamples:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 8, "...")
+    doAssert s == "u̲n̲d̲e̲r̲..."
+  let size = max(0, limit - suffix.graphemesCount)
+  var cut = 0
+  var i = 0
+  for bounds in s.graphemeBounds:
+    if i > limit:
+      break
+    if i < size:
+      cut = bounds.b+1
+    inc i
+  if i <= limit:
+    return
+  s.setLen cut
+  if cut > 0:
+    s.add suffix
+
+proc graphemesTruncateBytes*(s: var string, limit: Natural, suffix = "") =
+  ## Truncate a string to a given limit of bytes.
+  ## This is a no-op if the string lenght is
+  ## lesser than/equal to the limit.
+  ## The result is empty if there is not enough room for
+  ## at least one grapheme + the suffix.
+  ## The result is never larger than the limit.
+  ## Beware arbitrary truncation may generate text
+  ## or a word with an unintended meaning.
+  runnableExamples:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncateBytes(s, 20, "...")
+    doAssert s == "u̲n̲d̲e̲r̲..."
+    doAssert s.len == 18
+  if s.len <= limit:
+    return
+  let size = max(0, limit - suffix.len)
+  var cut = 0
+  for bounds in s.graphemeBounds:
+    if bounds.b+1 > size:
+      break
+    cut = bounds.b+1
+  s.setLen cut
+  if cut > 0:
+    s.add suffix

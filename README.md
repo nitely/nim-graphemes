@@ -57,6 +57,23 @@ block:
   # "flag, family, yawn, vampire, pinch, and diving mask"
   const s = "🇦🇷👨‍👩‍👧‍👦🥱🧛🏻‍♂️🤏🤿"
   assert s.graphemesSubStr(1, 3) == "👨‍👩‍👧‍👦🥱🧛🏻‍♂️"
+
+# Truncate to a limit of graphemes
+block:
+  var s = "🇦🇷🇺🇾🇨🇱"
+  graphemesTruncate(s, 2)
+  assert s == "🇦🇷🇺🇾"
+block:
+  var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+  graphemesTruncate(s, 8, "...")
+  assert s == "u̲n̲d̲e̲r̲..."
+
+# Truncate to a limit of bytes preserving the graphemes
+block:
+  var s = "🇦🇷🇺🇾🇨🇱"
+  graphemesTruncateBytes(s, 20)
+  assert s == "🇦🇷🇺🇾"
+  assert s.len == 16
 ```
 |  
 |  

@@ -1,3 +1,9 @@
+v0.9.0
+==================
+
+* Add `graphemesTruncate`
+* Add `graphemesTruncateBytes`
+
 v0.8.0
 ==================
 

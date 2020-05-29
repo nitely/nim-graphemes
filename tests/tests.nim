@@ -222,3 +222,80 @@ test "Test reverse graphemes in-place":
     var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
     s.graphemesReverse
     check s == "d̲e̲n̲i̲l̲r̲e̲d̲n̲u̲"
+
+test "graphemesTruncate":
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 8, "...")
+    check s == "u̲n̲d̲e̲r̲..."
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 8, "n̲e̲d̲")
+    check s == "u̲n̲d̲e̲r̲n̲e̲d̲"
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 10, "...")
+    check s == "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 9, "...")
+    check s == "u̲n̲d̲e̲r̲l̲..."
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 20)
+    check s == "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 10)
+    check s == "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncate(s, 9)
+    check s == "u̲n̲d̲e̲r̲l̲i̲n̲e̲"
+    graphemesTruncate(s, 5)
+    check s == "u̲n̲d̲e̲r̲"
+    graphemesTruncate(s, 0)
+    check s == ""
+    graphemesTruncate(s, 0, "...")
+    check s == ""
+  block:
+    var s = "🇦🇷🇺🇾🇨🇱"
+    graphemesTruncate(s, 2)
+    check s == "🇦🇷🇺🇾"
+
+test "graphemesTruncateBytes":
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncateBytes(s, 20, "...")
+    check s == "u̲n̲d̲e̲r̲..."
+    check s.len == 18
+  block:
+    var s = "u̲n̲d̲e̲r̲l̲i̲n̲e̲d̲"
+    graphemesTruncateBytes(s, 20)
+    check s == "u̲n̲d̲e̲r̲l̲"
+    check s.len == 18
+  block:
+    var s = "u̲n̲"
+    graphemesTruncateBytes(s, s.len)
+    check s == "u̲n̲"
+    graphemesTruncateBytes(s, s.len-1)
+    check s == "u̲"
+    graphemesTruncateBytes(s, s.len-1)
+    check s == ""
+  block:
+    var s = ""
+    graphemesTruncateBytes(s, 20, "...")
+    check s == ""
+  block:
+    var s = "abc"
+    graphemesTruncateBytes(s, 20, "...")
+    check s == "abc"
+    graphemesTruncateBytes(s, 3, "...")
+    check s == "abc"
+    graphemesTruncateBytes(s, 3)
+    check s == "abc"
+    graphemesTruncateBytes(s, 2)
+    check s == "ab"
+    graphemesTruncateBytes(s, 2, "...")
+    check s == "ab"
+    graphemesTruncateBytes(s, 1, "...")
+    check s == ""
+  block:
+    var s = "🇦🇷🇺🇾🇨🇱"
+    graphemesTruncateBytes(s, 20)
+    check s == "🇦🇷🇺🇾"
+    check s.len == 16
