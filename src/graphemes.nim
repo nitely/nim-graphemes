@@ -189,7 +189,8 @@ func graphemesReverse*(s: var string) {.inline.} =
 
 proc graphemeLenAt*(s: string, i: Natural): int =
   ## Return the number of bytes in the
-  ## grapheme starting at ``s[i]``
+  ## grapheme starting at ``s[i]``, where ``i`` is position in bytes,
+  ## not graphemes, and doesn't respect grapheme boundaries
   result = i
   var
     r: Rune
@@ -205,7 +206,8 @@ proc graphemeLenAt*(s: string, i: Natural): int =
 
 proc graphemeLenAt*(s: string, i: BackwardsIndex): int =
   ## Return the number of bytes in the
-  ## grapheme ending at ``s[^i]``
+  ## grapheme ending at ``s[^i]``, where ``i`` is position in bytes,
+  ## not graphemes, and doesn't respect grapheme boundaries
   doAssert i.int > 0
   result = len(s) - i.int
   var
