@@ -36,7 +36,7 @@ assert graphemesCount("ю́") == 1
 assert graphemesCount("👨‍👩‍👧‍👦") == 1  # Family of 4 emoji
 
 # Get number of bytes the grapheme at index 0 takes
-assert graphemeLenAt("u̲n̲d̲e̲r̲", 0) == 2
+assert graphemeLenAt("u̲n̲d̲e̲r̲", 0) == 3
 assert graphemeLenAt("ю́", 0) == 4
 
 # Reverse graphemes
