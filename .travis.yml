@@ -5,6 +5,7 @@ env:
   - NIM=0.20.0
   - NIM=1.0.6
   - NIM=1.2.0
+  - NIM=1.2.2
 before_install:
   - docker pull nimlang/nim:$NIM
 script:

@@ -24,7 +24,7 @@ test "Test graphemes break":
       graphemesFromTest.add(grapheme)
     check(graphemes(join(graphemesFromTest)) == graphemesFromTest)
     inc i
-  echo "$# graphemes tested" % [$i]
+  check i == 602
 
 test "Test graphemes break in reverse":
   var i = 0
@@ -44,7 +44,7 @@ test "Test graphemes break in reverse":
       graphemesFromTest.add(grapheme)
     check graphemesFromTest.join.graphemesReversed == graphemesFromTest.reversed
     inc i
-  echo "$# graphemes tested" % [$i]
+  check i == 602
 
 test "Test generated tables":
   var
@@ -53,7 +53,7 @@ test "Test generated tables":
   for cp, tcp in data:
     check(graphemeType(cp.Rune) == tcp)
     inc i
-  echo "$# code-points tested" % [$i]
+  check i == 1114112
 
 test "Test graphemeLenAt":
   check(graphemeLenAt("abc", 0) == 1)
