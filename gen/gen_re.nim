@@ -1,13 +1,34 @@
-import strutils
+import std/strutils
 
 const
-  unicodeVersion* = "12.1.0"
+  unicodeVersion* = "16.0.0"
   specVersion* = "29"
   specURL* = "http://www.unicode.org/reports/tr29/"
 
-# From http://www.unicode.org/reports/tr29/#Table_Combining_Char_Sequences_and_Grapheme_Clusters
-# [^Control CR LF]: Any ...
+# The regex is constructed from:
+# crlf | Control | precore* core postcore*
+# Note: [^Control CR LF] is Any
+# Links:
+# https://www.unicode.org/reports/tr29/tr29-45.html#Table_Combining_Char_Sequences_and_Grapheme_Clusters
+# https://www.unicode.org/reports/tr29/tr29-45.html#Regex_Definitions
 const pattern =
+  """
+  (CR LF | CR | LF) | Control
+  | Prepend*
+  (
+    (L* (V+ | LV V* | LVT) T* | L+ | T+)
+    | (RI RI)
+    | (Extended_Pictographic (Extend* ZWJ Extended_Pictographic)*)
+    | (InCB_Consonant ((InCB_Extend | InCB_Linker)* InCB_Linker (InCB_Extend | InCB_Linker)* InCB_Consonant)+)
+    | (RI | Any | InCB_Consonant | InCB_Linker | InCB_Extend | Prepend | Extend | ZWJ | SpacingMark)
+  )
+  (Extend | ZWJ | SpacingMark)*
+  """
+
+# This is from unicode 12, crafted by me before it was part of their docs.
+# Keep it because it's easier to understand.
+# [^Control CR LF]: Any ...
+const patternOld {.used.} =
   """
   (
     CR LF
@@ -15,9 +36,9 @@ const pattern =
     | Prepend*
     (
       (L* (V+ | LV V* | LVT) T* | L+ | T+)
-      | Regional_Indicator Regional_Indicator
+      | RI RI
       | Extended_Pictographic (Extend* ZWJ Extended_Pictographic)*
-      | (Prepend | Any | Regional_Indicator | Extend | ZWJ | SpacingMark)
+      | (Prepend | Any | RI | Extend | ZWJ | SpacingMark)
     )
     (Extend | ZWJ | SpacingMark)*
   )
@@ -32,9 +53,9 @@ const patternReversed =
     | (Extend | ZWJ | SpacingMark)*
     (
       (T* (V+ | V* LV | LVT) L* | L+ | T+)
-      | Regional_Indicator Regional_Indicator
+      | RI RI
       | (Extended_Pictographic ZWJ Extend*)* Extended_Pictographic
-      | (Prepend | Any | Regional_Indicator | Extend | ZWJ | SpacingMark)
+      | (Prepend | Any | RI | Extend | ZWJ | SpacingMark)
     )
     Prepend*
   )
@@ -43,11 +64,7 @@ const patternReversed =
 # IDs must be in non-overlapping substring order (i.e longest to shortest)
 const identifiers* = [
   "__EOF__",  # Reserved for the DFA
-  "Regional_Indicator",
-  #"E_Base_GAZ",
-  #"E_Base",
-  #"E_Modifier",
-  #"Glue_After_Zwj",
+  "RI",
   "Extended_Pictographic",
   "SpacingMark",
   "Control",

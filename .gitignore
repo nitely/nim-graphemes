@@ -4,3 +4,4 @@ gen/gen_dfa
 gen/gen_grapheme_break
 gen/gen_re
 docs/ugh
+config.nims
