@@ -8,6 +8,9 @@ const
 # The regex is constructed from:
 # crlf | Control | precore* core postcore*
 # Note: [^Control CR LF] is Any
+#       InCB_Extend + InCB_Linker is a subset of Extend
+#       ZWJ is a subset of InCB_Extend
+#       these overlaps are taken into account by this and the table gen
 # Links:
 # https://www.unicode.org/reports/tr29/tr29-45.html#Table_Combining_Char_Sequences_and_Grapheme_Clusters
 # https://www.unicode.org/reports/tr29/tr29-45.html#Regex_Definitions
@@ -18,11 +21,11 @@ const pattern =
   (
     (L* (V+ | LV V* | LVT) T* | L+ | T+)
     | (RI RI)
-    | (Extended_Pictographic (Extend* ZWJ Extended_Pictographic)*)
-    | (InCB_Consonant ((InCB_Extend | InCB_Linker)* InCB_Linker (InCB_Extend | InCB_Linker)* InCB_Consonant)+)
+    | (Extended_Pictographic ((Extend | InCB_Extend | InCB_Linker)* ZWJ Extended_Pictographic)*)
+    | (InCB_Consonant ((InCB_Extend | InCB_Linker | ZWJ)* InCB_Linker (InCB_Extend | InCB_Linker | ZWJ)* InCB_Consonant)+)
     | (RI | Any | InCB_Consonant | InCB_Linker | InCB_Extend | Prepend | Extend | ZWJ | SpacingMark)
   )
-  (Extend | ZWJ | SpacingMark)*
+  (Extend | InCB_Extend | InCB_Linker | ZWJ | SpacingMark)*
   """
 
 # This is from unicode 12, crafted by me before it was part of their docs.
@@ -64,8 +67,10 @@ const patternReversed =
 # IDs must be in non-overlapping substring order (i.e longest to shortest)
 const identifiers* = [
   "__EOF__",  # Reserved for the DFA
-  "RI",
   "Extended_Pictographic",
+  "InCB_Consonant",
+  "InCB_Extend",
+  "InCB_Linker",
   "SpacingMark",
   "Control",
   "Extend",
@@ -75,6 +80,7 @@ const identifiers* = [
   "CR",
   "LF",
   "LV",
+  "RI",
   "L",
   "V",
   "T",
