@@ -1,12 +1,12 @@
-import unittest
-import strutils
-import algorithm
-import unicode except strip
-import graphemes
-from graphemes/grapheme_break import graphemeType
+import std/unittest
+import std/strutils
+import std/algorithm
+import std/unicode except strip
+import ../src/graphemes
+from ../src/graphemes/grapheme_break import graphemeType
 from ../gen/gen_grapheme_break import nil
 
-func slowGraphemeReverse(s: string): seq[string] =
+func slowGraphemeReversed(s: string): seq[string] =
   s.graphemes().reversed()
 
 test "Test graphemes break":
@@ -46,7 +46,7 @@ test "Test graphemes break in reverse":
         grapheme.add(unicode.toUTF8(unicode.Rune(parseHexInt(ch2.strip()))))
       graphemesFromTest.add(grapheme)
     check graphemesFromTest.join.graphemesReversed == graphemesFromTest.reversed
-    check graphemesFromTest.join.graphemesReversed == graphemesFromTest.join.slowGraphemeReverse
+    check graphemesFromTest.join.graphemesReversed == graphemesFromTest.join.slowGraphemeReversed
     inc i
   check i == 1093
 
@@ -231,31 +231,31 @@ test "graphemesReversed":
   check "🇦🇷🇺🇾🇨🇱".graphemesReversed ==
     @["🇨🇱", "🇺🇾", "🇦🇷"]
   check "🇦🇷🇺🇾🇨🇱".graphemesReversed ==
-    "🇦🇷🇺🇾🇨🇱".slowGraphemeReverse
+    "🇦🇷🇺🇾🇨🇱".slowGraphemeReversed
   # unicode 16
   #check "\u0915\u0308\u0915" == "क̈क"
   check "\u0915\u0308\u0915".graphemesReversed ==
-    "\u0915\u0308\u0915".slowGraphemeReverse
+    "\u0915\u0308\u0915".slowGraphemeReversed
   check "\u0915\u0308\u0915\u0308\u0915".graphemesReversed ==
-    "\u0915\u0308\u0915\u0308\u0915".slowGraphemeReverse
+    "\u0915\u0308\u0915\u0308\u0915".slowGraphemeReversed
   check "\u0915\u0308\u0308\u0915".graphemesReversed ==
-    "\u0915\u0308\u0308\u0915".slowGraphemeReverse
+    "\u0915\u0308\u0308\u0915".slowGraphemeReversed
   check "\u0308\u0915\u0308\u0915".graphemesReversed ==
-    "\u0308\u0915\u0308\u0915".slowGraphemeReverse
+    "\u0308\u0915\u0308\u0915".slowGraphemeReversed
   check "\u0308\u0915\u0308\u0915\u0308".graphemesReversed ==
-    "\u0308\u0915\u0308\u0915\u0308".slowGraphemeReverse
+    "\u0308\u0915\u0308\u0915\u0308".slowGraphemeReversed
   check "\u0915\u0308\u0915\u0915".graphemesReversed ==
-    "\u0915\u0308\u0915\u0915".slowGraphemeReverse
+    "\u0915\u0308\u0915\u0915".slowGraphemeReversed
   check "\u0915\u0915\u0308\u0915".graphemesReversed ==
-    "\u0915\u0915\u0308\u0915".slowGraphemeReverse
+    "\u0915\u0915\u0308\u0915".slowGraphemeReversed
   check "\u0915\u0915\u0308\u0915\u0915".graphemesReversed ==
-    "\u0915\u0915\u0308\u0915\u0915".slowGraphemeReverse
+    "\u0915\u0915\u0308\u0915\u0915".slowGraphemeReversed
   check "\u0915\u0308\u0915\u0308\u0915\u0308\u0915".graphemesReversed ==
-    "\u0915\u0308\u0915\u0308\u0915\u0308\u0915".slowGraphemeReverse
+    "\u0915\u0308\u0915\u0308\u0915\u0308\u0915".slowGraphemeReversed
   check "\u0915\u0308".graphemesReversed ==
-    "\u0915\u0308".slowGraphemeReverse
+    "\u0915\u0308".slowGraphemeReversed
   check "\u0308\u0915".graphemesReversed ==
-    "\u0308\u0915".slowGraphemeReverse
+    "\u0308\u0915".slowGraphemeReversed
 
 test "graphemesTruncate":
   block:
