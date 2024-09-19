@@ -24,7 +24,7 @@ test "Test graphemes break":
       graphemesFromTest.add(grapheme)
     check(graphemes(join(graphemesFromTest)) == graphemesFromTest)
     inc i
-  check i == 602
+  check i == 1093
 
 test "Test graphemes break in reverse":
   var i = 0
@@ -44,7 +44,7 @@ test "Test graphemes break in reverse":
       graphemesFromTest.add(grapheme)
     check graphemesFromTest.join.graphemesReversed == graphemesFromTest.reversed
     inc i
-  check i == 602
+  check i == 1093
 
 test "Test generated tables":
   var
