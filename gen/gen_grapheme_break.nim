@@ -1,14 +1,14 @@
-import std/tables
 import std/strutils
 import std/math
 
-from ./gen_re import identifiers
+from ./gen_re import identifiers, riType
 
 const
   typeDefault = identifiers.find("Any")
   maxCP = 0x10FFFF
 
-assert typeDefault >= 0
+doAssert typeDefault >= 0
+doAssert riType >= 0
 
 proc parse(filePath: string): seq[int] =
   # This used to be a nim Table but it was painfully slow
@@ -109,12 +109,13 @@ proc buildData*(): seq[int] =
   let incbLinker = identifiers.find("InCB_Linker")
   let extend = identifiers.find("Extend")
   let zwj = identifiers.find("ZWJ")
-  assert incbExtend >= 0 and incbLinker >= 0 and extend >= 0
+  doAssert incbExtend >= 0 and incbLinker >= 0 and extend >= 0 and zwj >= 0
   for cp, typ in pairs incb:
-    if typ == incbExtend:
-      if result[cp] != zwj:
-        doAssert result[cp] == extend, $cp
-        result[cp] = typ
+    if result[cp] == zwj:
+      doAssert typ == incbExtend
+    elif typ == incbExtend:
+      doAssert result[cp] == extend, $cp
+      result[cp] = typ
     elif typ == incbLinker:
       doAssert result[cp] == extend, $cp
       result[cp] = typ
@@ -176,7 +177,7 @@ proc findBestTable(data: seq[int], block_size: var int): Stages =
 const graphemeBreakTemplate = """## Two-level table
 ## This is auto-generated. Do not modify it
 
-import unicode
+import std/unicode
 
 const graphemeIndexes = [
   $#
@@ -187,6 +188,7 @@ const graphemeTypes = [
 ]
 
 const blockSize = $#
+const riType* = $#
 
 proc genAsciiTypes(): array[128, int8] =
   assert blockSize <= 128
@@ -197,7 +199,7 @@ proc genAsciiTypes(): array[128, int8] =
 
 const asciiTypes = genAsciiTypes()
 
-proc graphemeType*(r: Rune): int {.inline.} =
+proc graphemeType*(r: Rune): int =
   assert r.int <= 0x10FFFF
   if r.int < 128:
     return asciiTypes[r.int]
@@ -220,6 +222,8 @@ when isMainModule:
     f.write(graphemeBreakTemplate % [
       join(stages.stage1, "'u8,\n  "),
       join(stage2, ",\n  "),
-      $blockSize])
+      $blockSize,
+      $riType
+    ])
   finally:
     close(f)

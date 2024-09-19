@@ -100,6 +100,8 @@ const identifiers* = [
   "T",
   "Any"]
 
+const riType* = identifiers.find("RI")
+
 var letters* = ""
 for c in 'a' .. 'z':
   letters.add(c)

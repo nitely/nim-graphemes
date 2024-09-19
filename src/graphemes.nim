@@ -126,8 +126,6 @@ proc bwRuneAt(s: string, n: var int, r: var Rune) {.raises: [].} =
   fastRuneAt(s, n, r, false)
   dec n
 
-const riType = 14
-
 template breakRi(): untyped {.dirty.} =
   ## Needed when going backwards only.
   ## Break a Regional Indicator (RI)

@@ -1,7 +1,7 @@
 ## Two-level table
 ## This is auto-generated. Do not modify it
 
-import unicode
+import std/unicode
 
 const graphemeIndexes = [
   0'u8,
@@ -8870,6 +8870,7 @@ const graphemeTypes = [
 ]
 
 const blockSize = 128
+const riType* = 14
 
 proc genAsciiTypes(): array[128, int8] =
   assert blockSize <= 128
@@ -8880,7 +8881,7 @@ proc genAsciiTypes(): array[128, int8] =
 
 const asciiTypes = genAsciiTypes()
 
-proc graphemeType*(r: Rune): int {.inline.} =
+proc graphemeType*(r: Rune): int =
   assert r.int <= 0x10FFFF
   if r.int < 128:
     return asciiTypes[r.int]

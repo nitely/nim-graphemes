@@ -157,7 +157,7 @@ test "Test emojis":
   check graphemesCount("🥸") == 1
   # Family + skin tone
   check graphemesCount("👨🏽‍👩🏽‍👧🏽‍👦🏽") == 1
-  # 6 families with skin tone
+  # 5 families with skin tone
   check graphemesCount("👨🏻‍👩🏻‍👧🏻‍👦🏻👨🏼‍👩🏼‍👧🏼‍👦🏼👨🏽‍👩🏽‍👧🏽‍👦🏽👨🏾‍👩🏾‍👧🏾‍👦🏾👨🏿‍👩🏿‍👧🏿‍👦🏿") == 5
 
 test "Test grapheme iterator":
