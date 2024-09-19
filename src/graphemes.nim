@@ -83,7 +83,7 @@ const
     [0'i8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
   ]
 
-iterator graphemeBounds*(s: string): Slice[int] {.inline.} =
+iterator graphemeBounds*(s: string): Slice[int] {.inline, raises: [].} =
   ## Return grapheme boundaries in `s`.
   ## Boundaries are inclusive
   var
@@ -106,18 +106,18 @@ iterator graphemeBounds*(s: string): Slice[int] {.inline.} =
     a = b
     b = n
 
-iterator graphemes*(s: string): string {.inline.} =
+iterator graphemes*(s: string): string {.inline, raises: [].} =
   ## Iterate ``s`` returning graphemes
   for slc in s.graphemeBounds:
     yield s[slc]
 
-proc graphemes*(s: string): seq[string] =
+proc graphemes*(s: string): seq[string] {.raises: [].} =
   ## Return the grapheme sequence of ``s``
   result = newSeqOfCap[string](s.len)
   for c in graphemes(s):
     result.add(c)
 
-proc bwRuneAt(s: string, n: var int, r: var Rune) =
+proc bwRuneAt(s: string, n: var int, r: var Rune) {.raises: [].} =
   ## Take rune ending at ``n`` and
   ## decrece ``n`` by the bytes of the Rune.
   ## Ends when ``n`` reaches ``-1``
@@ -150,7 +150,7 @@ template breakRi(): untyped {.dirty.} =
     bwRuneAt(s, n, r)
     break
 
-iterator graphemeBoundsReversed*(s: string): Slice[int] {.inline.} =
+iterator graphemeBoundsReversed*(s: string): Slice[int] {.inline, raises: [].} =
   ## Return grapheme boundaries of `s` in reverse order.
   ## Boundaries are inclusive
   var
@@ -182,24 +182,24 @@ iterator graphemeBoundsReversed*(s: string): Slice[int] {.inline.} =
     b = a
     a = n
 
-iterator graphemesReversed*(s: string): string {.inline.} =
+iterator graphemesReversed*(s: string): string {.inline, raises: [].} =
   ## Return graphemes of `s` in reverse order
   for bounds in s.graphemeBoundsReversed:
     yield s[bounds]
 
-proc graphemesReversed*(s: string): seq[string] =
+proc graphemesReversed*(s: string): seq[string] {.raises: [].} =
   ## Return the grapheme sequence of ``s`` in reverse order
   result = newSeqOfCap[string](s.len)
   for c in graphemesReversed(s):
     result.add(c)
 
-func graphemesReverse*(s: var string) {.inline.} =
+func graphemesReverse*(s: var string) {.raises: [].} =
   ## Reverse graphemes of `s` in-place
   for bounds in s.graphemeBoundsReversed:
     s.reverse(bounds.a, bounds.b)
   s.reverse
 
-proc graphemeLenAt*(s: string, i: Natural): int =
+proc graphemeLenAt*(s: string, i: Natural): int {.raises: [].} =
   ## Return the number of bytes in the
   ## grapheme starting at ``s[i]``, where ``i`` is position in bytes,
   ## not graphemes, and doesn't respect grapheme boundaries
@@ -216,7 +216,7 @@ proc graphemeLenAt*(s: string, i: Natural): int =
     result = n
   dec(result, i)
 
-proc graphemeLenAt*(s: string, i: BackwardsIndex): int =
+proc graphemeLenAt*(s: string, i: BackwardsIndex): int {.raises: [].} =
   ## Return the number of bytes in the
   ## grapheme ending at ``s[^i]``, where ``i`` is position in bytes,
   ## not graphemes, and doesn't respect grapheme boundaries
@@ -241,7 +241,7 @@ proc graphemeLenAt*(s: string, i: BackwardsIndex): int =
     result = nn
   result = len(s) - i.int - result
 
-proc graphemesCount*(s: string): int =
+proc graphemesCount*(s: string): int {.raises: [].} =
   ## Return the number of graphemes in ``s``
   result = 0
   for _ in s.graphemeBounds:
@@ -249,7 +249,7 @@ proc graphemesCount*(s: string): int =
 
 proc graphemesSubStr*(
   s: string, first: int, last = int.high
-): string =
+): string {.raises: [].} =
   ## Return the sub-string
   ## starting at the ``first`` grapheme and
   ## ending at the ``last`` grapheme. Return
@@ -274,7 +274,7 @@ proc graphemesSubStr*(
     inc count
   return s[i .. j]
 
-proc graphemesTruncate*(s: var string, limit: Natural, suffix = "") =
+proc graphemesTruncate*(s: var string, limit: Natural, suffix = "") {.raises: [].} =
   ## Truncate a string to a given limit of graphems.
   ## This is a no-op if the string graphemes are
   ## lesser than/equal to the limit.
@@ -302,7 +302,7 @@ proc graphemesTruncate*(s: var string, limit: Natural, suffix = "") =
   if cut > 0:
     s.add suffix
 
-proc graphemesTruncateBytes*(s: var string, limit: Natural, suffix = "") =
+proc graphemesTruncateBytes*(s: var string, limit: Natural, suffix = "") {.raises: [].} =
   ## Truncate a string to a given limit of bytes.
   ## This is a no-op if the string lenght is
   ## lesser than/equal to the limit.
