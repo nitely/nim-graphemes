@@ -28,6 +28,21 @@ const pattern =
   (Extend | InCB_Extend | InCB_Linker | ZWJ | SpacingMark)*
   """
 
+# For backward matching (i.e: reverse iterator, etc)
+const patternReversed =
+  """
+  (LF CR | CR | LF) | Control
+  | (Extend | InCB_Extend | InCB_Linker | ZWJ | SpacingMark)*
+  (
+    (T* (V+ | V* LV | LVT) L* | L+ | T+)
+    | (RI RI)
+    | ((Extended_Pictographic ZWJ (Extend | InCB_Extend | InCB_Linker)*)* Extended_Pictographic)
+    | ((InCB_Consonant (InCB_Extend | InCB_Linker | ZWJ)* InCB_Linker (InCB_Extend | InCB_Linker | ZWJ)*)+ InCB_Consonant)
+    | (RI | Any | InCB_Consonant | InCB_Linker | InCB_Extend | Prepend | Extend | ZWJ | SpacingMark)
+  )
+  Prepend*
+  """
+
 # This is from unicode 12, crafted by me before it was part of their docs.
 # Keep it because it's easier to understand.
 # [^Control CR LF]: Any ...
@@ -47,8 +62,7 @@ const patternOld {.used.} =
   )
   """
 
-# For backward matching (i.e: reverse iterator, etc)
-const patternReversed =
+const patternReversedOld {.used.} =
   """
   (
     LF CR
@@ -105,3 +119,4 @@ when isMainModule:
   echo buildRePattern(pattern)
   echo "patternReversed:"
   echo buildRePattern(patternReversed)
+  echo "RI type: ", $identifiers.find("RI")
